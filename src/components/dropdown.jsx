@@ -68,8 +68,8 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
                   src={option.src}
                   alt={option.label}
                   style={{
-                    width: '16px',
-                    height: '16px',
+                    width: '24px',
+                    height: '24px',
                     display: 'inline-block',
                     marginRight: '8px',
                     objectFit: 'cover',

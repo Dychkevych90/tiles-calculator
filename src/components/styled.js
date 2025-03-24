@@ -109,7 +109,6 @@ export const InfoBlock = styled.div`
                         overflow: hidden;
                         max-width: 109px;
                         white-space: nowrap;
-                        margin-left: 30px;
                         text-overflow: ellipsis;
                     }
                     
