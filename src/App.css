@@ -27,6 +27,7 @@
   overflow-x: scroll;
   max-height: 100vh;
   white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 
 .input {
