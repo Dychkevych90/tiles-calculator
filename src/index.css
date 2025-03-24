@@ -17,15 +17,6 @@
     box-sizing: border-box;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   display: flex;
   min-width: 320px;
@@ -71,7 +62,7 @@ input[type="number"] {
 .clear-btn {
   padding: 0;
   background: none;
-  color: #170504;
+  color: #B52A21;
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -81,7 +72,11 @@ input[type="number"] {
   text-decoration: underline;
 
   &:hover {
-    color: #D3342A
+    color: #170504;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 14px;
   }
 
   .trash-icon {
@@ -90,5 +85,36 @@ input[type="number"] {
     object-fit: contain;
     margin-right: 5px;
   }
+}
 
+.mobile-container {
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: flex-start;
+
+  @media (max-width: 900px) {
+    display: flex;
+  }
+}
+
+.mobile-menu {
+  background: #F4F4F4;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 16px;
+  border-radius: 8px;
+
+  img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+}
+
+.mobile-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #170504;
 }

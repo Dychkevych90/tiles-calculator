@@ -9,6 +9,22 @@ export const InfoContainer = styled.div`
     align-items: flex-start;
     margin-right: 50px;
     gap: 32px;
+
+    @media (max-width: 900px) {
+        display: flex;
+        position: absolute;
+        z-index: 1000;
+        left: 0;
+        width: 100%;
+        transform: ${props => props.isMobile ? 'translateX(0%);' : 'translateX(-100%)'};
+        transition: .3s;
+        margin-right: 0;
+        top: 84px;
+        padding: 18px;
+        background-color: #F8F8F8;
+        max-width: 400px;
+        gap: 12px;
+    }
 `
 
 export const InfoBlock = styled.div`
@@ -19,6 +35,12 @@ export const InfoBlock = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    @media (max-width: 900px) {
+        padding: 8px 12px;
+        gap: 4px;
+        background-color: #FFFCFC;
+    }
 
     .info-row {
         display: flex;
@@ -33,6 +55,21 @@ export const InfoBlock = styled.div`
         align-items: center;
         flex-direction: row;
         margin-right: 0;
+        
+        @media (max-width: 900px) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            
+            @media (max-width: 900px) {
+                margin-top: 8px;
+            }
+        }
     }
 
     .value {
@@ -42,6 +79,11 @@ export const InfoBlock = styled.div`
         font-weight: 500;
         border-radius: 8px;
         margin: 0 8px;
+        
+        @media (max-width: 900px) {
+            margin-left: 0;
+            background-color: #F4F4F4;
+        }
     }
 
     .details {
@@ -62,6 +104,18 @@ export const InfoBlock = styled.div`
                 .item {
                     display: flex;
                     align-items: center;
+                    
+                    p {
+                        overflow: hidden;
+                        max-width: 109px;
+                        white-space: nowrap;
+                        margin-left: 30px;
+                        text-overflow: ellipsis;
+                    }
+                    
+                    @media (max-width: 900px) {
+                        margin-bottom: 16px;
+                    }
                 }
             }
         }
@@ -69,7 +123,7 @@ export const InfoBlock = styled.div`
 
     .request-btn {
         color: #E9E9E9;
-        background-color: #B52A21;
+        background-color: #D3342A;
         padding: 10px 34px;
         border-radius: 8px;
         font-size: 16px;
@@ -78,7 +132,7 @@ export const InfoBlock = styled.div`
         border: none;
         
         &:hover {
-            background-color: #D3342A;
+            background-color: #B52A21;
         }
     }
     
@@ -87,6 +141,46 @@ export const InfoBlock = styled.div`
         padding-right: 30px;
         padding-top: 24px;
         border-top: 1px solid #CDCDCD;
+        
+        @media (max-width: 900px) {
+            padding-top: 12px;
+            padding-right: 20px;
+        }
+    }
+    
+    .measurement {
+        @media (max-width: 900px) {
+            margin-bottom: 10px;
+        }
+    }
+    
+    .calculation {
+        @media (max-width: 900px) {
+            margin-bottom: 10px;
+        }
+    }
+    
+    .request-section {
+        p {
+            max-width: 150px;
+            white-space: pre-wrap;
+        }
+        
+        @media (max-width: 900px) {
+            flex-direction: column;
+            
+            p {
+                max-width: unset;
+                white-space: nowrap;
+                font-size: 16px;
+                font-weight: 500;
+            }
+            
+            button {
+                width: 100%;
+                margin-top: 8px;
+            }
+        }
     }
 `
 
@@ -97,6 +191,11 @@ export const SubTitle = styled.h3`
     color: ${secondaryColor};
     margin: 0;
     text-align: left;
+
+    @media (max-width: 900px) {
+        font-size: 18px;
+        line-height: 22px;
+    }
 `
 
 export const Text = styled.p`
@@ -106,6 +205,11 @@ export const Text = styled.p`
     color: ${textColor};
     margin: 0;
     white-space: nowrap;
+
+    @media (max-width: 900px) {
+        font-size: 14px;
+        line-height: 18px;
+    }
 `
 
 export const BoldText = styled.p`
@@ -122,6 +226,10 @@ export const RadioContainer = styled.div`
     align-items: center;
     gap: 10px;
     margin-left: 32px;
+    
+    @media (max-width: 900px) {
+        margin-left: 16px;
+    }
 `;
 
 export const RadioLabel = styled.label`
@@ -171,6 +279,10 @@ export const StyledSelect = styled.div`
     min-height: 40px;
     min-width: 290px;
     position: relative;
+    
+    @media (max-width: 900px) {
+        min-width: 244px;
+    }
 
     .dropdown-selected {
         display: flex;
@@ -188,6 +300,12 @@ export const StyledSelect = styled.div`
             transition: .3s;
             transform: ${({isOpen}) => isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
         }
+        
+        p {
+            overflow: hidden;
+            margin-right: 30px;
+            text-overflow: ellipsis;
+        }
     }
 
     .dropdown-options {
@@ -204,6 +322,11 @@ export const StyledSelect = styled.div`
         display: flex;
         padding: 12px;
         width: 100%;
+        
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         &:hover {
             background-color: #F4F4F4;
@@ -247,6 +370,10 @@ export const Button = styled.button`
         outline: none;
         border: none;
     }
+    
+    @media (max-width: 900px) {
+        background-color: #F4F4F4;
+    }
 `;
 
 export const Input = styled.input`
@@ -271,8 +398,34 @@ export const InputContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    
-    .decrease {
-        margin-left: 10px;
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+        align-items: flex-start;
     }
+    
+    .controllers {
+        display: flex;
+        align-items: center;
+
+        .decrease {
+            margin-left: 10px;
+
+            @media (max-width: 900px) {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            margin-top: 10px;
+        }
+    }
+`;
+
+
+export const MobileMenuWrapper = styled.div`
+    width: 100%;
+`;
+  
+  `
 `

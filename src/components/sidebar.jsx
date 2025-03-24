@@ -41,7 +41,10 @@ const SideBar = (
     totalPrice,
     setImages,
     setTileAssets,
-    tileAssets
+    tileAssets,
+    isMobile,
+    setImagesArray,
+    imagesArray
   }) => {
 
   const getColorName = (hex) => {
@@ -50,7 +53,7 @@ const SideBar = (
       "#DDE2FF": "Corner",
       "#D7DAE9": "Edge",
     };
-    return colorMap[hex] || "Unknown";
+    return colorMap[hex] || hex
   };
 
   const handleImageUpload = (event) => {
@@ -61,27 +64,41 @@ const SideBar = (
     reader.onload = (e) => {
       const img = new window.Image();
       img.src = e.target.result;
-      console.log('file', file)
+
       img.onload = () => {
         const newColorKey = file.name;
 
         if (!tileAssets[newColorKey]) {
           setImages((prev) => ({ ...prev, [newColorKey]: img }));
           setTileAssets((prev) => ({ ...prev, [newColorKey]: img.src }));
-
           setSelectedColor(newColorKey);
         }
+
+        setImagesArray((prev) => [...prev, {[newColorKey]: img.src}]);
       };
     };
     reader.readAsDataURL(file);
   };
 
+  const imgArr = imagesArray.map(img => {
+    const key = Object.keys(img)[0];
+    return {
+      value: key,
+      color: img[key],
+      label: key,
+      src: img[key],
+    };
+  });
+
+  const combinedArray = [...options, ...imgArr];
+  const allColors = [...new Set([...Object.keys(colorPrices), ...Object.keys(tileAssets)])];
+
   return(
-    <InfoContainer>
+    <InfoContainer isMobile={isMobile}>
       <InfoBlock>
         <SubTitle>Tile Calculator</SubTitle>
 
-        <div className='info-row'>
+        <div className='info-row measurement'>
           <Text>Unit of measurement:</Text>
 
           <RadioContainer>
@@ -115,25 +132,35 @@ const SideBar = (
 
       <InfoBlock>
         <SubTitle>Tile Calculation</SubTitle>
-        <div className="info-row">
+
+        <div className="info-row calculation">
           <div className='info' style={{ marginRight: '10px' }}>
             <Text>Area:</Text>
-            <div className='value'>{totalArea}</div>
-            <Text>{unit}</Text>
+
+            <div className="info-item">
+              <div className='value'>{totalArea}</div>
+              <Text>{unit}</Text>
+            </div>
           </div>
 
           <div className='info'>
             <Text>Tiles required:</Text>
-            <div className='value'>{neededTiles}</div>
-            <Text>units</Text>
+
+            <div className="info-item">
+              <div className='value'>{neededTiles}</div>
+              <Text>units</Text>
+            </div>
           </div>
         </div>
 
         <div className="info-row">
           <div className='info'>
             <Text>With a reserve (+10%):</Text>
-            <div className='value'>{tilesWithReserve}</div>
-            <Text>units</Text>
+
+            <div className='info-item'>
+              <div className='value'>{tilesWithReserve}</div>
+              <Text>units</Text>
+            </div>
           </div>
         </div>
       </InfoBlock>
@@ -143,7 +170,7 @@ const SideBar = (
           <SubTitle>Colors</SubTitle>
 
           <Dropdown
-            options={options}
+            options={combinedArray}
             selectedValue={selectedColor}
             onChange={(value) => setSelectedColor(value)}
             handleImageUpload={handleImageUpload}
@@ -169,44 +196,54 @@ const SideBar = (
               </tr>
             </thead>
             <tbody>
-              {Object.keys(colorPrices).map((color) => {
-                const count = tiles.filter(t => t === color).length;
-                return count > 0 ? (
-                  <tr key={color}>
-                    <td>
-                      <div className='item'>
-                        <span
-                          style={{
-                            backgroundColor: color,
-                            width: '32px',
-                            height: '32px',
-                            display: 'inline-block',
-                            marginRight: '8px',
-                            borderRadius: '8px',
-                          }}
-                        />
-                        {getColorName(color)}
-                      </div>
-                    </td>
-                    <td><Text>{colorPrices[color]}$</Text></td>
-                    <td><Text>{count}</Text></td>
-                    <td style={{textAlign: 'left'}}><b>{(count * colorPrices[color]).toFixed(0)}$</b></td>
+              {
+                allColors.some(color => tiles.includes(color)) ? (
+                  allColors.map((color) => {
+                    const count = tiles.filter(t => t === color).length;
+                    const price = colorPrices[color] || 1;
+
+                    return count > 0 ? (
+                      <tr key={color}>
+                        <td>
+                          <div className='item'>
+                            <span
+                              style={{
+                                backgroundColor: color,
+                                width: isMobile ? '24px' : '32px',
+                                height: isMobile ? '24px' : '32px',
+                                display: 'inline-block',
+                                marginRight: '8px',
+                                borderRadius: '8px',
+                              }}
+                            />
+                           <p>{getColorName(color)}</p>
+                          </div>
+                        </td>
+                        <td><Text>{price}$</Text></td>
+                        <td><Text>{count}</Text></td>
+                        <td style={{textAlign: 'left'}}><b>{(count * price).toFixed(0)}$</b></td>
+                      </tr>
+                    ) : null;
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="4"><Text>No data</Text></td>
                   </tr>
-                ) : null;
-              })}
+                )
+              }
             </tbody>
           </table>
         </div>
 
         <div className="info-row summary">
-          <BoldText>Tolal price:</BoldText>
+          <BoldText>Total price:</BoldText>
           <BoldText>{totalPrice}$</BoldText>
         </div>
       </InfoBlock>
 
       <InfoBlock>
-        <div className="info-row" style={{justifyContent: 'space-between'}}>
-          <Text>Your design is ready!<br/>Submit your request</Text>
+        <div className="info-row request-section" style={{justifyContent: 'space-between'}}>
+          <Text>Your design is ready! Submit your request</Text>
 
           <button className='request-btn'>Request the quote</button>
         </div>

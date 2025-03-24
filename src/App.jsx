@@ -3,7 +3,8 @@ import { Stage, Layer, Rect, Line, Image } from "react-konva";
 import MainHeader from "./components/header";
 import Sidebar from "./components/sidebar";
 import './App.css'
-import trash from '../public/trash.svg'
+import trash from '../public/trash.svg';
+import menuItem from '../public/menuItem.svg';
 
 const colorPrices = {
   "#FFC1C1": 2,
@@ -21,6 +22,8 @@ export default function App() {
   const [drawing, setDrawing] = useState(false);
   const [images, setImages] = useState({});
   const [tileAssets, setTileAssets] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+  const [imagesArray, setImagesArray] = useState([]);
 
   useEffect(() => {
     Object.keys(tileAssets).forEach((color) => {
@@ -29,6 +32,7 @@ export default function App() {
         img.src = tileAssets[color];
         img.onload = () => {
           setImages((prev) => ({ ...prev, [color]: img }));
+          setImagesArray((prev) => [...prev, {[color]: img}]);
         };
         img.onerror = () => {
           console.error(`Failed to load image for color ${color}`);
@@ -92,7 +96,23 @@ export default function App() {
 
   return (
     <>
-      <MainHeader/>
+      <MainHeader setIsMobile={setIsMobile} isMobile={isMobile}/>
+
+      <div className="container mobile-container">
+        <button onClick={() => setIsMobile(!isMobile)} className='mobile-menu'>
+          <img src={menuItem} alt="menu icon"/>
+        </button>
+        <div className='mobile-title'>Create your tile</div>
+      </div>
+
+      <div className="container">
+        <div className='btn-container'>
+          <button className='clear-btn' onClick={clearTiles}>
+            <img className='trash-icon' src={trash} alt="icon"/>
+            Clear drawing
+          </button>
+        </div>
+      </div>
 
       <div className="container">
         <Sidebar
@@ -112,16 +132,12 @@ export default function App() {
           setTileAssets={setTileAssets}
           tileAssets={tileAssets}
           setImages={setImages}
+          isMobile={isMobile}
+          setImagesArray={setImagesArray}
+          imagesArray={imagesArray}
         />
 
         <div className="stage-container">
-          <div className='btn-container'>
-            <button className='clear-btn' onClick={clearTiles}>
-              <img className='trash-icon' src={trash} alt="icon"/>
-              Clear drawing
-            </button>
-          </div>
-
           <Stage width={stageWidth} height={stageHeight}>
             <Layer>
               {tiles.map((color, index) => {

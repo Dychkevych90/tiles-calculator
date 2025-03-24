@@ -63,15 +63,29 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
               className="dropdown-option"
               onClick={() => handleSelect(option.value)}
             >
-              <span
-                style={{
-                  backgroundColor: option.color,
-                  width: '16px',
-                  height: '16px',
-                  display: 'inline-block',
-                  marginRight: '8px',
-                }}
-              />
+              {option.src ? (
+                <img
+                  src={option.src}
+                  alt={option.label}
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    display: 'inline-block',
+                    marginRight: '8px',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <span
+                  style={{
+                    backgroundColor: option.color,
+                    width: '16px',
+                    height: '16px',
+                    display: 'inline-block',
+                    marginRight: '8px',
+                  }}
+                />
+              )}
               <Text>{option.label}</Text>
             </div>
           ))}
