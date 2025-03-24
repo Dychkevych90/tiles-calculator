@@ -24,7 +24,9 @@
 
 .stage-container {
   flex: 2;
-  overflow: auto;
+  overflow-x: scroll;
+  max-height: 100vh;
+  white-space: nowrap;
 }
 
 .input {
