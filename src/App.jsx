@@ -138,7 +138,7 @@ export default function App() {
         />
 
         <div className="stage-container">
-          <Stage width={stageWidth} height={stageHeight}>
+          <Stage width={stageWidth} height={stageHeight} style={{marginBottom: 15}}>
             <Layer>
               {tiles.map((color, index) => {
                 const tileWidth = Math.max(stageWidth / tilesX, minTileSize);
