@@ -166,6 +166,9 @@ export default function App() {
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     onClick={() => handleTileClick(index)}
+                    onTouchStart={handleMouseDown}
+                    onTouchEnd={handleMouseUp}
+                    onTouchMove={handleMouseMove}
                   />
                 ) : (
                   <Rect
@@ -181,6 +184,9 @@ export default function App() {
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                     onClick={() => handleTileClick(index)}
+                    onTouchStart={handleMouseDown}
+                    onTouchEnd={handleMouseUp}
+                    onTouchMove={handleMouseMove}
                   />
                 );
               })}
