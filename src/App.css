@@ -33,11 +33,8 @@
 /* Ensure the scrollbar is always visible */
 .stage-container::-webkit-scrollbar {
   display: block;
-}
-
-/* Ensure the scrollbar is always visible */
-.stage-container::-webkit-scrollbar {
-  height: 12px; /* Adjust the height of the scrollbar */
+  -webkit-appearance: none;
+  height: 12px;
 }
 
 .stage-container::-webkit-scrollbar-thumb {
