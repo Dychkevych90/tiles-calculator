@@ -30,6 +30,31 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Ensure the scrollbar is always visible */
+.stage-container::-webkit-scrollbar {
+  display: block;
+}
+
+/* Ensure the scrollbar is always visible */
+.stage-container::-webkit-scrollbar {
+  height: 12px; /* Adjust the height of the scrollbar */
+}
+
+.stage-container::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Rounded corners of the scrollbar thumb */
+}
+
+.stage-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+/* For Firefox */
+.stage-container {
+  scrollbar-width: thin; /* Make the scrollbar thinner */
+  scrollbar-color: #888 #f4f4f4; /* Color of the scrollbar thumb and track */
+}
+
 .input {
   display: flex;
   align-items: center;
