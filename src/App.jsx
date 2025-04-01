@@ -29,6 +29,49 @@ export default function App() {
   const [imagesArray, setImagesArray] = useState([]);
   const [doorwayLength, setDoorwayLength] = useState(0);
 
+  const tileSizes = {
+    GridMaxPro: { m2: 0.16, sqft: 1.722 },
+    PlayFlex: { m2: 0.1225, sqft: 1.318 }
+  };
+
+  // const tileSizes = {
+  //   GridMaxPro: { sizeM: 0.4, sizeFt: 1.312 },  // 40cm = 0.4m (approx 1.312 ft)
+  //   PlayFlex: { sizeM: 0.35, sizeFt: 1.148 }    // 35cm = 0.35m (approx 1.148 ft)
+  // };
+  //
+  // const calculateNeededTiles = (widthInTiles, heightInTiles, tileType, unit) => {
+  //   if (!tileType || !tileSizes[tileType]) {
+  //     return { customTotalArea: 0, customNeededTiles: 0 };
+  //   }
+  //
+  //   const tileSize = unit === 'm2' ? tileSizes[tileType].sizeM : tileSizes[tileType].sizeFt;
+  //
+  //   const totalWidth = widthInTiles * tileSize;
+  //   const totalHeight = heightInTiles * tileSize;
+  //
+  //   const customTotalArea = totalWidth * totalHeight;
+  //   const customNeededTiles = widthInTiles * heightInTiles;
+  //
+  //   return { customTotalArea, customNeededTiles };
+  // };
+
+  const calculateNeededTiles = (width, height, tileType, unit) => {
+    if (!tileType || !tileSizes[tileType]) {
+      return { customTotalArea: 0, customNeededTiles: 0 };
+    }
+
+    const customTotalArea = unit === "m2"
+      ? width * height
+      : width * height * 10.7639;
+
+    const tileArea = tileSizes[tileType][unit];
+    const customNeededTiles = Math.ceil(customTotalArea / tileArea);
+
+    return { customTotalArea, customNeededTiles };
+  };
+
+  const { customTotalArea, customNeededTiles } = calculateNeededTiles(width, height, selectedTile, unit);
+
   useEffect(() => {
     Object.keys(tileAssets).forEach((color) => {
       if (!images[color]) {
@@ -196,6 +239,8 @@ export default function App() {
           setDoorwayLength={setDoorwayLength}
           doorwayLength={doorwayLength}
           calculateEdgesAndCorners={calculateEdgesAndCorners}
+          customTotalArea={customTotalArea}
+          customNeededTiles={customNeededTiles}
         />
 
         <div className="stage-container">

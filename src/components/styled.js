@@ -310,6 +310,9 @@ export const StyledSelect = styled.div`
     min-height: 40px;
     min-width: 290px;
     position: relative;
+    border-bottom-left-radius: ${({isOpen}) => isOpen ? '0' : '8px'};
+    border-bottom-right-radius: ${({isOpen}) => isOpen ? '0' : '8px'};
+    border-bottom: ${({isOpen}) => isOpen ? 'none' : '1px solid #ccc'};
 
     @media (max-width: 900px) {
         min-width: 244px;
@@ -319,9 +322,9 @@ export const StyledSelect = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin-bottom: ${({isOpen}) => isOpen ? '8px' : '0'};
-        border-bottom: ${({isOpen}) => isOpen ? '1px solid #8C8C8C' : 'none'};
-        padding: 0 14px ${({isOpen}) => isOpen ? '10px' : '0'};
+        //margin-bottom: ${({isOpen}) => isOpen ? '8px' : '0'};
+        //border-bottom: ${({isOpen}) => isOpen ? '1px solid #8C8C8C' : 'none'};
+        padding: 0 14px 0;
 
         .arrow-icon {
             width: 24px;
@@ -346,6 +349,14 @@ export const StyledSelect = styled.div`
         justify-content: center;
         cursor: pointer;
         color: #000;
+        position: absolute;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        top: 41px;
+        z-index: 10;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
     }
 
     .dropdown-option {

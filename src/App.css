@@ -26,14 +26,15 @@
   flex: 2;
   max-height: 100vh;
   white-space: nowrap;
+  overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
 }
 
-@media (max-width: 600px) {
-  .stage-container {
-    overflow-x: scroll;
-  }
-}
+/*@media (max-width: 600px) {*/
+/*  .stage-container {*/
+
+/*  }*/
+/*}*/
 
 /* Ensure the scrollbar is always visible */
 .stage-container::-webkit-scrollbar {

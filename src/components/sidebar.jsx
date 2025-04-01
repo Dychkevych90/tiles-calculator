@@ -59,11 +59,12 @@ const SideBar = (
     setSurfaceType,
     setDoorwayLength,
     doorwayLength,
-    calculateEdgesAndCorners
+    calculateEdgesAndCorners,
+    customTotalArea,
+    customNeededTiles,
   }) => {
 
   const { edges, corners } = calculateEdgesAndCorners();
-  console.log('edges', edges, 'corners', corners);
 
   const getColorName = (hex) => {
     const colorMap = {
@@ -147,7 +148,7 @@ const SideBar = (
             <input
               className='customInput'
               type="number"
-              placeholder='Enter doorway length'
+              placeholder='Enter doorway length m'
               onChange={(e) => setDoorwayLength(e.target.value)}
               value={doorwayLength}
             />
@@ -229,7 +230,7 @@ const SideBar = (
             <Text>Tiles required:</Text>
 
             <div className="info-item">
-              <div className='value'>{neededTiles}</div>
+              <div className='value'>{customNeededTiles === 0 ? neededTiles : customNeededTiles}</div>
               <Text>units</Text>
             </div>
           </div>
