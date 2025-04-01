@@ -46,7 +46,7 @@ export const InfoBlock = styled.div`
         display: flex;
         align-content: center;
         width: 100%;
-        align-items: center;
+        align-items: ${props => props.type === 'custom' ? 'flex-start' : 'center'};
         flex-direction: row;
     }
 
@@ -55,17 +55,17 @@ export const InfoBlock = styled.div`
         align-items: center;
         flex-direction: row;
         margin-right: 0;
-        
+
         @media (max-width: 900px) {
             flex-direction: column;
             align-items: flex-start;
         }
-        
+
         .info-item {
             display: flex;
             align-items: center;
             flex-direction: row;
-            
+
             @media (max-width: 900px) {
                 margin-top: 8px;
             }
@@ -79,7 +79,7 @@ export const InfoBlock = styled.div`
         font-weight: 500;
         border-radius: 8px;
         margin: 0 8px;
-        
+
         @media (max-width: 900px) {
             margin-left: 0;
             background-color: #F4F4F4;
@@ -104,14 +104,14 @@ export const InfoBlock = styled.div`
                 .item {
                     display: flex;
                     align-items: center;
-                    
+
                     p {
                         overflow: hidden;
                         max-width: 109px;
                         white-space: nowrap;
                         text-overflow: ellipsis;
                     }
-                    
+
                     @media (max-width: 900px) {
                         margin-bottom: 16px;
                     }
@@ -129,56 +129,85 @@ export const InfoBlock = styled.div`
         font-weight: 500;
         transition: .3s;
         border: none;
-        
+
         &:hover {
             background-color: #B52A21;
         }
     }
-    
+
     .summary {
         justify-content: space-between;
         padding-right: 30px;
         padding-top: 24px;
         border-top: 1px solid #CDCDCD;
-        
+
         @media (max-width: 900px) {
             padding-top: 12px;
             padding-right: 20px;
         }
     }
-    
+
     .measurement {
+        .unit {
+            min-width: 110px;
+        }
+
         @media (max-width: 900px) {
             margin-bottom: 10px;
         }
     }
     
+    .selected-tile {
+        @media (max-width: 900px) {
+            flex-direction: column;
+        }
+    }
+
     .calculation {
         @media (max-width: 900px) {
             margin-bottom: 10px;
         }
     }
-    
+
     .request-section {
         p {
             max-width: 150px;
             white-space: pre-wrap;
         }
-        
+
         @media (max-width: 900px) {
             flex-direction: column;
-            
+
             p {
                 max-width: unset;
                 white-space: nowrap;
                 font-size: 16px;
                 font-weight: 500;
             }
-            
+
             button {
                 width: 100%;
                 margin-top: 8px;
             }
+        }
+    }
+
+    .customInput {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 5px;
+        appearance: textfield;
+        font-weight: 500;
+        background-color: #fff;
+        border-radius: 4px;
+        color: #6D6D6D;
+        border: none;
+
+        &:focus,
+        &:active {
+            border: none;
+            outline: none;
         }
     }
 `
@@ -222,12 +251,15 @@ export const BoldText = styled.p`
 
 export const RadioContainer = styled.div`
     display: flex;
-    align-items: center;
+    align-items: ${props => props.type === 'custom' ? 'flex-start' : 'center'};
     gap: 10px;
-    margin-left: 32px;
-    
+    margin-left: 20px;
+    flex-direction: ${props => props.type === 'custom' ? 'column' : 'row'};
+    justify-content: ${props => props.type === 'custom' ? 'center' : 'flex-start'};
+
     @media (max-width: 900px) {
-        margin-left: 16px;
+        margin-left: ${props => props.type === 'custom' ? '0' : '16px'};
+        margin-top: ${props => props.type === 'custom' ? '10px' : '0'};
     }
 `;
 
@@ -278,7 +310,7 @@ export const StyledSelect = styled.div`
     min-height: 40px;
     min-width: 290px;
     position: relative;
-    
+
     @media (max-width: 900px) {
         min-width: 244px;
     }
@@ -299,7 +331,7 @@ export const StyledSelect = styled.div`
             transition: .3s;
             transform: ${({isOpen}) => isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
         }
-        
+
         p {
             overflow: hidden;
             margin-right: 30px;
@@ -321,7 +353,7 @@ export const StyledSelect = styled.div`
         display: flex;
         padding: 12px;
         width: 100%;
-        
+
         p {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -331,13 +363,13 @@ export const StyledSelect = styled.div`
             background-color: #F4F4F4;
         }
     }
-    
+
     .add-btn {
         span {
             display: flex;
             align-items: center;
             cursor: pointer;
-            
+
             img {
                 width: 24px;
                 height: 24px;
@@ -352,15 +384,15 @@ export const StyledSelect = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  background-color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
     color: #6D6D6D;
     border: none;
 
@@ -369,17 +401,17 @@ export const Button = styled.button`
         outline: none;
         border: none;
     }
-    
+
     @media (max-width: 900px) {
         background-color: #F4F4F4;
     }
 `;
 
 export const Input = styled.input`
-  width: 45px;
-  text-align: center;
-  font-size: 16px;
-  padding: 5px;
+    width: 45px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
     appearance: textfield;
     background-color: transparent;
     font-weight: 500;
@@ -402,7 +434,7 @@ export const InputContainer = styled.div`
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .controllers {
         display: flex;
         align-items: center;
@@ -414,7 +446,7 @@ export const InputContainer = styled.div`
                 margin-left: 0;
             }
         }
-        
+
         @media (max-width: 900px) {
             margin-top: 10px;
         }
@@ -425,6 +457,6 @@ export const InputContainer = styled.div`
 export const MobileMenuWrapper = styled.div`
     width: 100%;
 `;
-  
-  `
+
+`
 `

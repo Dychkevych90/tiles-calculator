@@ -3,7 +3,7 @@ import {StyledSelect, Text} from "./styled.js";
 import ArrowIcon from '../../public/arrow.svg';
 import crossIcon from '../../public/crossIcon.svg';
 
-const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAssets }) => {
+const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAssets, customBtn = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -90,19 +90,22 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
             </div>
           ))}
 
-          <label className="dropdown-option add-btn">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
-            />
-            <span>
+          {
+            customBtn && (
+              <label className="dropdown-option add-btn">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                />
+                <span>
               <img src={crossIcon} alt="icon"/>
               <Text>Add custom color</Text>
             </span>
-          </label>
-
+              </label>
+            )
+          }
         </div>
       )}
     </StyledSelect>

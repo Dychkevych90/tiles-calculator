@@ -24,6 +24,12 @@ const options = [
   { value: "#D7DAE9", color: "#D7DAE9", label: "Edge" }
 ];
 
+const surfaceTypeOptions = [
+  { value: "concrete", color: "concrete", label: "Concrete" },
+  { value: "parquet", color: "parquet", label: "Parquet" },
+  { value: "asphalt", color: "asphalt", label: "Asphalt" },
+];
+
 const SideBar = (
   {
     unit,
@@ -44,8 +50,20 @@ const SideBar = (
     tileAssets,
     isMobile,
     setImagesArray,
-    imagesArray
+    imagesArray,
+    setSelectedTile,
+    selectedTile,
+    installationType,
+    setInstallationType,
+    surfaceType,
+    setSurfaceType,
+    setDoorwayLength,
+    doorwayLength,
+    calculateEdgesAndCorners
   }) => {
+
+  const { edges, corners } = calculateEdgesAndCorners();
+  console.log('edges', edges, 'corners', corners);
 
   const getColorName = (hex) => {
     const colorMap = {
@@ -95,11 +113,49 @@ const SideBar = (
 
   return(
     <InfoContainer isMobile={isMobile}>
-      <InfoBlock>
+      <InfoBlock type={'custom'}>
         <SubTitle>Tile Calculator</SubTitle>
 
         <div className='info-row measurement'>
-          <Text>Unit of measurement:</Text>
+          <Text style={{minWidth: '105px', textAlign: 'left'}}>Installation:</Text>
+
+          <RadioContainer>
+            <RadioLabel>
+              <RadioInput
+                type="radio"
+                value="wallToWall"
+                checked={installationType === "wallToWall"}
+                onChange={(e) => setInstallationType(e.target.value)}
+              />
+              <Text>Wall-to-wall</Text>
+            </RadioLabel>
+
+            <RadioLabel>
+              <RadioInput
+                type="radio"
+                value="pads"
+                checked={installationType === "pads"}
+                onChange={(e) => setInstallationType(e.target.value)}
+              />
+              <Text>Pads</Text>
+            </RadioLabel>
+          </RadioContainer>
+        </div>
+
+        {
+          installationType === "wallToWall" && (
+            <input
+              className='customInput'
+              type="number"
+              placeholder='Enter doorway length'
+              onChange={(e) => setDoorwayLength(e.target.value)}
+              value={doorwayLength}
+            />
+          )
+        }
+
+        <div className='info-row measurement'>
+          <Text style={{minWidth: '105px', textAlign: 'left'}}>Measurement:</Text>
 
           <RadioContainer>
             <RadioLabel>
@@ -120,6 +176,32 @@ const SideBar = (
                 onChange={(e) => setUnit(e.target.value)}
               />
               <Text>ft²</Text>
+            </RadioLabel>
+          </RadioContainer>
+        </div>
+
+        <div className='info-row measurement selected-tile'>
+          <Text style={{minWidth: '105px', textAlign: 'left'}}>Tile selection:</Text>
+
+          <RadioContainer type={'custom'}>
+            <RadioLabel>
+              <RadioInput
+                type="radio"
+                value="GridMaxPro"
+                checked={selectedTile === "GridMaxPro"}
+                onChange={(e) => setSelectedTile(e.target.value)}
+              />
+              <Text>GridMax Pro (40 cm² / 1.7213 sqft)</Text>
+            </RadioLabel>
+
+            <RadioLabel>
+              <RadioInput
+                type="radio"
+                value="PlayFlex"
+                checked={selectedTile === "PlayFlex"}
+                onChange={(e) => setSelectedTile(e.target.value)}
+              />
+              <Text>PlayFlex (30.5 cm² / 1.0013 sqft)</Text>
             </RadioLabel>
           </RadioContainer>
         </div>
@@ -155,10 +237,30 @@ const SideBar = (
 
         <div className="info-row">
           <div className='info'>
-            <Text>With a reserve (+10%):</Text>
+            <Text>Tiles with a reserve (+10%):</Text>
 
             <div className='info-item'>
               <div className='value'>{tilesWithReserve}</div>
+              <Text>units</Text>
+            </div>
+          </div>
+        </div>
+
+        <div className="info-row calculation">
+          <div className='info' style={{ marginRight: '10px' }}>
+            <Text>Edges:</Text>
+
+            <div className="info-item">
+              <div className='value'>{edges}</div>
+              <Text>units</Text>
+            </div>
+          </div>
+
+          <div className='info'>
+            <Text>Corners:</Text>
+
+            <div className="info-item">
+              <div className='value'>{corners}</div>
               <Text>units</Text>
             </div>
           </div>
@@ -167,7 +269,7 @@ const SideBar = (
 
       <InfoBlock>
         <div className="info-row">
-          <SubTitle>Colors</SubTitle>
+          <SubTitle style={{minWidth: 72}}>Colors</SubTitle>
 
           <Dropdown
             options={combinedArray}
@@ -175,6 +277,21 @@ const SideBar = (
             onChange={(value) => setSelectedColor(value)}
             handleImageUpload={handleImageUpload}
             tileAssets={tileAssets}
+          />
+        </div>
+      </InfoBlock>
+
+      <InfoBlock>
+        <div className="info-row">
+          <SubTitle style={{minWidth: 72}} >Surface</SubTitle>
+
+          <Dropdown
+            options={surfaceTypeOptions}
+            selectedValue={surfaceType}
+            onChange={(value) => setSurfaceType(value)}
+            handleImageUpload={() => {}}
+            tileAssets={{}}
+            customBtn={false}
           />
         </div>
       </InfoBlock>
