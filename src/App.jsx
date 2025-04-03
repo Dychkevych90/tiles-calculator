@@ -14,8 +14,8 @@ const colorPrices = {
 
 export default function App() {
   const [unit, setUnit] = useState("m2");
-  const [selectedTile, setSelectedTile] = useState('');
-  const [installationType, setInstallationType] = useState('pads');
+  const [selectedTile, setSelectedTile] = useState('GridMaxPro');
+  const [installationType, setInstallationType] = useState('wallToWall');
   const [surfaceType, setSurfaceType] = useState('parquet');
   const [width, setWidth] = useState(10);
   const [height, setHeight] = useState(10);
@@ -30,8 +30,8 @@ export default function App() {
   const [doorwayLength, setDoorwayLength] = useState(0);
 
   const tileSizes = {
-    GridMaxPro: { m2: 0.16, sqft: 1.722 },
-    PlayFlex: { m2: 0.1225, sqft: 1.318 }
+    GridMaxPro: { m2: 0.16, ft2: 1.722 },
+    PlayFlex: { m2: 0.1225, ft2: 1.318 }
   };
 
   // const tileSizes = {
@@ -60,18 +60,17 @@ export default function App() {
       return { customTotalArea: 0, customNeededTiles: 0 };
     }
 
-    const customTotalArea = unit === "m2"
-      ? width * height
-      : width * height * 10.7639;
+    const customTotalArea = width * height;
 
     const tileArea = tileSizes[tileType][unit];
+    console.log('tileArea', tileArea)
     const customNeededTiles = Math.ceil(customTotalArea / tileArea);
 
     return { customTotalArea, customNeededTiles };
   };
 
   const { customTotalArea, customNeededTiles } = calculateNeededTiles(width, height, selectedTile, unit);
-
+  console.log('customTotalArea', customTotalArea)
   useEffect(() => {
     Object.keys(tileAssets).forEach((color) => {
       if (!images[color]) {
@@ -133,7 +132,7 @@ export default function App() {
   const totalArea = width * height;
   const tileArea = tileSize * tileSize;
   const neededTiles = Math.ceil(totalArea / tileArea);
-  const tilesWithReserve = Math.ceil(neededTiles * 1.1);
+  const tilesWithReserve = Math.ceil(customNeededTiles * 1.1);
 
   const coloredTiles = tiles.filter(color => color !== "#fff");
   const totalPrice = coloredTiles.reduce((sum, color) => sum + (colorPrices[color] || 0), 0);
@@ -150,7 +149,7 @@ export default function App() {
     if (installationType === "wallToWall") {
       const perimeter = 2 * (width + height);
       const edges = perimeter - doorwayLength;
-      const corners = 4;
+      const corners = 0;
       return { edges, corners };
     } else if (installationType === "pads") {
       let edges = 0;
@@ -184,7 +183,7 @@ export default function App() {
         }
       });
 
-      return { edges, corners: externalCorners + internalCorners };
+      return { edges, corners: 4 };
     }
     return { edges: 0, corners: 0 };
   };

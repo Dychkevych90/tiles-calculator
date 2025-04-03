@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import {backgroundColor} from "../styles/constants.js";
 import close from "../../public/close.svg";
+import logo from '../../public/logo-removebg-preview.png';
 
 const MainHeader = ({setIsMobile, isMobile}) => {
   return (
     <Header>
-      <div className="logo">LOGO</div>
-      <div className="caption">Tile Calculator</div>
+      <div className="logo">
+        <img src={logo} alt="logo"/>
+      </div>
+      <div className="caption">Floor Designer</div>
 
       {
         isMobile && (
@@ -39,12 +42,18 @@ const Header = styled.header`
 
     .logo {
         border-radius: 16px;
-        background-color: ${backgroundColor};
+        max-width: 250px;
         padding: 12px 0;
         min-width: 250px;
         font-size: 24px;
         line-height: 28px;
         font-weight: 700;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
         @media (max-width: 900px) {
             padding: 10.5px 0;
@@ -52,6 +61,7 @@ const Header = styled.header`
             line-height: 22px;
             min-width: 114px;
             border-radius: 8px;
+            max-width: 114px;
         }
     }
     
