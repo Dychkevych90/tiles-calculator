@@ -63,14 +63,14 @@ export default function App() {
     const customTotalArea = width * height;
 
     const tileArea = tileSizes[tileType][unit];
-    console.log('tileArea', tileArea)
+
     const customNeededTiles = Math.ceil(customTotalArea / tileArea);
 
     return { customTotalArea, customNeededTiles };
   };
 
   const { customTotalArea, customNeededTiles } = calculateNeededTiles(width, height, selectedTile, unit);
-  console.log('customTotalArea', customTotalArea)
+
   useEffect(() => {
     Object.keys(tileAssets).forEach((color) => {
       if (!images[color]) {
