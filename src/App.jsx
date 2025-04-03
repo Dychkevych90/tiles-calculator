@@ -31,7 +31,7 @@ export default function App() {
 
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
-    PlayFlex: { m2: 0.1225, ft2: 1.318 }
+    PlayFlex: { m2: 0.093025, ft2: 1.0013 }
   };
 
   // const tileSizes = {
@@ -146,44 +146,64 @@ export default function App() {
   }, [installationType]);
 
   const calculateEdgesAndCorners = () => {
+    const tileSizes = {
+      GridMaxPro: {edgeM: 0.4, edgeFt: 1.7213 },
+      PlayFlex: { edgeM: 0.305, edgeFt: 1.0013 }
+    };
+
+    const tileEdgeLength =
+      unit === 'm2'
+        ? tileSizes[selectedTile].edgeM
+        : tileSizes[selectedTile].edgeFt;
+
     if (installationType === "wallToWall") {
       const perimeter = 2 * (width + height);
-      const edges = perimeter - doorwayLength;
+      const effectivePerimeter = perimeter - doorwayLength;
+
+      const edges = Math.ceil(effectivePerimeter / tileEdgeLength);
+
       const corners = 0;
+
       return { edges, corners };
     } else if (installationType === "pads") {
-      let edges = 0;
-      let externalCorners = 0;
-      let internalCorners = 0;
-      const tilesX = Math.ceil(width / tileSize);
-      const tilesY = Math.ceil(height / tileSize);
+      // let edges = 0;
+      // let externalCorners = 0;
+      // let internalCorners = 0;
+      // const tilesX = Math.ceil(width / tileSize);
+      // const tilesY = Math.ceil(height / tileSize);
+      //
+      // tiles.forEach((color, index) => {
+      //   if (color !== "#fff") {
+      //     const x = index % tilesX;
+      //     const y = Math.floor(index / tilesX);
+      //
+      //     // Check edges
+      //     if (x === 0 || tiles[index - 1] === "#fff") edges++; // Left edge
+      //     if (x === tilesX - 1 || tiles[index + 1] === "#fff") edges++; // Right edge
+      //     if (y === 0 || tiles[index - tilesX] === "#fff") edges++; // Top edge
+      //     if (y === tilesY - 1 || tiles[index + tilesX] === "#fff") edges++; // Bottom edge
+      //
+      //     // Check external corners
+      //     if ((x === 0 || tiles[index - 1] === "#fff") && (y === 0 || tiles[index - tilesX] === "#fff")) externalCorners++; // Top-left external corner
+      //     if ((x === tilesX - 1 || tiles[index + 1] === "#fff") && (y === 0 || tiles[index - tilesX] === "#fff")) externalCorners++; // Top-right external corner
+      //     if ((x === 0 || tiles[index - 1] === "#fff") && (y === tilesY - 1 || tiles[index + tilesX] === "#fff")) externalCorners++; // Bottom-left external corner
+      //     if ((x === tilesX - 1 || tiles[index + 1] === "#fff") && (y === tilesY - 1 || tiles[index + tilesX] === "#fff")) externalCorners++; // Bottom-right external corner
+      //
+      //     // Check internal corners
+      //     if (x > 0 && y > 0 && tiles[index - 1] !== "#fff" && tiles[index - tilesX] !== "#fff" && tiles[index - tilesX - 1] === "#fff") internalCorners++; // Top-left internal corner
+      //     if (x < tilesX - 1 && y > 0 && tiles[index + 1] !== "#fff" && tiles[index - tilesX] !== "#fff" && tiles[index - tilesX + 1] === "#fff") internalCorners++; // Top-right internal corner
+      //     if (x > 0 && y < tilesY - 1 && tiles[index - 1] !== "#fff" && tiles[index + tilesX] !== "#fff" && tiles[index + tilesX - 1] === "#fff") internalCorners++; // Bottom-left internal corner
+      //     if (x < tilesX - 1 && y < tilesY - 1 && tiles[index + 1] !== "#fff" && tiles[index + tilesX] !== "#fff" && tiles[index + tilesX + 1] === "#fff") internalCorners++; // Bottom-right internal corner
+      //   }
+      // });
 
-      tiles.forEach((color, index) => {
-        if (color !== "#fff") {
-          const x = index % tilesX;
-          const y = Math.floor(index / tilesX);
+      const perimeter = 2 * (width + height);
 
-          // Check edges
-          if (x === 0 || tiles[index - 1] === "#fff") edges++; // Left edge
-          if (x === tilesX - 1 || tiles[index + 1] === "#fff") edges++; // Right edge
-          if (y === 0 || tiles[index - tilesX] === "#fff") edges++; // Top edge
-          if (y === tilesY - 1 || tiles[index + tilesX] === "#fff") edges++; // Bottom edge
+      const edges = perimeter / tileEdgeLength
 
-          // Check external corners
-          if ((x === 0 || tiles[index - 1] === "#fff") && (y === 0 || tiles[index - tilesX] === "#fff")) externalCorners++; // Top-left external corner
-          if ((x === tilesX - 1 || tiles[index + 1] === "#fff") && (y === 0 || tiles[index - tilesX] === "#fff")) externalCorners++; // Top-right external corner
-          if ((x === 0 || tiles[index - 1] === "#fff") && (y === tilesY - 1 || tiles[index + tilesX] === "#fff")) externalCorners++; // Bottom-left external corner
-          if ((x === tilesX - 1 || tiles[index + 1] === "#fff") && (y === tilesY - 1 || tiles[index + tilesX] === "#fff")) externalCorners++; // Bottom-right external corner
+      const corners = 4;
 
-          // Check internal corners
-          if (x > 0 && y > 0 && tiles[index - 1] !== "#fff" && tiles[index - tilesX] !== "#fff" && tiles[index - tilesX - 1] === "#fff") internalCorners++; // Top-left internal corner
-          if (x < tilesX - 1 && y > 0 && tiles[index + 1] !== "#fff" && tiles[index - tilesX] !== "#fff" && tiles[index - tilesX + 1] === "#fff") internalCorners++; // Top-right internal corner
-          if (x > 0 && y < tilesY - 1 && tiles[index - 1] !== "#fff" && tiles[index + tilesX] !== "#fff" && tiles[index + tilesX - 1] === "#fff") internalCorners++; // Bottom-left internal corner
-          if (x < tilesX - 1 && y < tilesY - 1 && tiles[index + 1] !== "#fff" && tiles[index + tilesX] !== "#fff" && tiles[index + tilesX + 1] === "#fff") internalCorners++; // Bottom-right internal corner
-        }
-      });
-
-      return { edges, corners: 4 };
+      return { edges: edges.toFixed(0), corners };
     }
     return { edges: 0, corners: 0 };
   };
