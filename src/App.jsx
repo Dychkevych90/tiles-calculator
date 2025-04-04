@@ -172,8 +172,8 @@ export default function App() {
       const perimeter = 2 * (width + height);
       const effectivePerimeter = perimeter - doorwayLength;
 
-      // const edges = Math.ceil(effectivePerimeter / tileEdgeLength);
-      const edges = doorwayLength;
+      const edges = Math.ceil(doorwayLength / tileEdgeLength);
+      //const edges = doorwayLength;
 
       const corners = 0;
 
