@@ -343,10 +343,10 @@ export const StyledSelect = styled.div`
     }
 
     .dropdown-options {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
+        //display: flex;
+        //flex-direction: column;
+        //align-items: flex-start;
+        //justify-content: center;
         cursor: pointer;
         color: #000;
         position: absolute;
@@ -357,6 +357,12 @@ export const StyledSelect = styled.div`
         z-index: 10;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
+        max-height: 300px;
+        overflow-y: auto;
+        
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .dropdown-option {

@@ -12,16 +12,52 @@ import {
 import Dropdown from "./dropdown.jsx";
 import SizeControl from "./InputContainer.jsx";
 
+// const colorPrices = {
+//   "#FFC1C1": 2,
+//   "#DDE2FF": 7,
+//   "#D7DAE9": 6,
+// };
+
 const colorPrices = {
-  "#FFC1C1": 2,
-  "#DDE2FF": 7,
-  "#D7DAE9": 6,
+  "#000000": 7.70, // Black
+  "#FF0000": 7.70, // Red
+  "#808080": 7.70, // Gray
+  "#FFFFFF": 7.70, // White
+  "#0000FF": 7.70, // Blue
+  "#90EE90": 7.70, // Light Green
+  "#FFFF00": 7.70, // Yellow
+  "#FFD700": 7.70, // Gold
+  "#ADD8E6": 7.70, // Light Blue
+  "#008000": 7.70, // Green
+  "#800080": 7.70, // Purple
+  "#FFC0CB": 7.70, // Pink
+  "#FFA500": 7.70, // Orange
+  "#40E0D0": 7.70, // Turquoise
+  "#D3D3D3": 7.70  // Light Gray
 };
 
+// const options = [
+//   { value: "#FFC1C1", color: "#FFC1C1", label: "Red Tile" },
+//   { value: "#DDE2FF", color: "#DDE2FF", label: "Corner" },
+//   { value: "#D7DAE9", color: "#D7DAE9", label: "Edge" }
+// ];
+
 const options = [
-  { value: "#FFC1C1", color: "#FFC1C1", label: "Red Tile" },
-  { value: "#DDE2FF", color: "#DDE2FF", label: "Corner" },
-  { value: "#D7DAE9", color: "#D7DAE9", label: "Edge" }
+  { value: "#FF0000", color: "#FF0000", label: "Red" },
+  { value: "#40E0D0", color: "#40E0D0", label: "Turquoise" },
+  { value: "#000000", color: "#000000", label: "Black" },
+  { value: "#808080", color: "#808080", label: "Gray" },
+  { value: "#FFFFFF", color: "#FFFFFF", label: "White" },
+  { value: "#0000FF", color: "#0000FF", label: "Blue" },
+  { value: "#90EE90", color: "#90EE90", label: "Light Green" },
+  { value: "#FFFF00", color: "#FFFF00", label: "Yellow" },
+  { value: "#FFD700", color: "#FFD700", label: "Gold" },
+  { value: "#ADD8E6", color: "#ADD8E6", label: "Light Blue" },
+  { value: "#008000", color: "#008000", label: "Green" },
+  { value: "#800080", color: "#800080", label: "Purple" },
+  { value: "#FFC0CB", color: "#FFC0CB", label: "Pink" },
+  { value: "#FFA500", color: "#FFA500", label: "Orange" },
+  { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray" }
 ];
 
 const surfaceTypeOptions = [
@@ -68,9 +104,21 @@ const SideBar = (
 
   const getColorName = (hex) => {
     const colorMap = {
-      "#FFC1C1": "Red tile",
-      "#DDE2FF": "Corner",
-      "#D7DAE9": "Edge",
+      "#000000": "Black",
+      "#FF0000": "Red",
+      "#808080": "Gray",
+      "#FFFFFF": "White",
+      "#0000FF": "Blue",
+      "#90EE90": "Light Green",
+      "#FFFF00": "Yellow",
+      "#FFD700": "Gold",
+      "#ADD8E6": "Light Blue",
+      "#008000": "Green",
+      "#800080": "Purple",
+      "#FFC0CB": "Pink",
+      "#FFA500": "Orange",
+      "#40E0D0": "Turquoise",
+      "#D3D3D3": "Light Gray"
     };
     return colorMap[hex] || hex
   };
@@ -355,7 +403,7 @@ const SideBar = (
 
         <div className="info-row summary">
           <BoldText>Total price:</BoldText>
-          <BoldText>{totalPrice}$</BoldText>
+          <BoldText>{totalPrice.toFixed(2)}$</BoldText>
         </div>
       </InfoBlock>
 

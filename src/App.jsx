@@ -7,9 +7,21 @@ import trash from '../public/trash.svg';
 import menuItem from '../public/menuItem.svg';
 
 const colorPrices = {
-  "#FFC1C1": 2,
-  "#DDE2FF": 7,
-  "#D7DAE9": 6,
+  "#000000": 7.70, // Black
+  "#FF0000": 7.70, // Red
+  "#808080": 7.70, // Gray
+  "#FFFFFF": 7.70, // White
+  "#0000FF": 7.70, // Blue
+  "#90EE90": 7.70, // Light Green
+  "#FFFF00": 7.70, // Yellow
+  "#FFD700": 7.70, // Gold
+  "#ADD8E6": 7.70, // Light Blue
+  "#008000": 7.70, // Green
+  "#800080": 7.70, // Purple
+  "#FFC0CB": 7.70, // Pink
+  "#FFA500": 7.70, // Orange
+  "#40E0D0": 7.70, // Turquoise
+  "#D3D3D3": 7.70  // Light Gray
 };
 
 export default function App() {
@@ -20,7 +32,7 @@ export default function App() {
   const [width, setWidth] = useState(10);
   const [height, setHeight] = useState(10);
   const [tileSize] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("#FFC1C1");
+  const [selectedColor, setSelectedColor] = useState("#FF0000");
   const [tiles, setTiles] = useState(Array(width * height).fill("#fff"));
   const [drawing, setDrawing] = useState(false);
   const [images, setImages] = useState({});
@@ -160,7 +172,8 @@ export default function App() {
       const perimeter = 2 * (width + height);
       const effectivePerimeter = perimeter - doorwayLength;
 
-      const edges = Math.ceil(effectivePerimeter / tileEdgeLength);
+      // const edges = Math.ceil(effectivePerimeter / tileEdgeLength);
+      const edges = doorwayLength;
 
       const corners = 0;
 
