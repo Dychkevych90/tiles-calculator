@@ -108,13 +108,13 @@ export default function App() {
 
   const handleTileClick = (index) => {
     setTiles((prev) => {
-      if (installationType === "wallToWall") {
-        return prev.map(() => selectedColor);
-      } else {
+      // if (installationType === "wallToWall") {
+      //   return prev.map(() => selectedColor);
+      // } else {
         const newTiles = [...prev];
         newTiles[index] = selectedColor;
         return newTiles;
-      }
+      //}
     });
   };
 
@@ -127,7 +127,7 @@ export default function App() {
   const handleMouseUp = () => setDrawing(false);
 
   const handleMouseMove = (e) => {
-    if(installationType === 'wallToWall') return;
+    //if(installationType === 'wallToWall') return;
     if (!drawing) return;
     const { x, y } = e.target.getStage().getPointerPosition();
     const tileX = Math.floor(x / (stageWidth / tilesX));

@@ -302,12 +302,11 @@ export const RadioInput = styled.input`
 export const StyledSelect = styled.div`
     background-color: #fff;
     border-radius: 8px;
-    padding: 10px 0;
     border: 1px solid #ccc;
     cursor: pointer;
     color: #000;
     margin-left: 20px;
-    min-height: 40px;
+    //min-height: 40px;
     min-width: 290px;
     position: relative;
     border-bottom-left-radius: ${({isOpen}) => isOpen ? '0' : '8px'};
@@ -324,7 +323,7 @@ export const StyledSelect = styled.div`
         justify-content: flex-start;
         //margin-bottom: ${({isOpen}) => isOpen ? '8px' : '0'};
         //border-bottom: ${({isOpen}) => isOpen ? '1px solid #8C8C8C' : 'none'};
-        padding: 0 14px 0;
+        padding: 10px 14px;
 
         .arrow-icon {
             width: 24px;
