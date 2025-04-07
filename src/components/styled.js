@@ -129,6 +129,7 @@ export const InfoBlock = styled.div`
         font-weight: 500;
         transition: .3s;
         border: none;
+        cursor: pointer;
 
         &:hover {
             background-color: #B52A21;

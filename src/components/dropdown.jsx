@@ -101,7 +101,7 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
                 />
                 <span>
               <img src={crossIcon} alt="icon"/>
-              <Text>Add custom color</Text>
+              <Text>Add custom logo</Text>
             </span>
               </label>
             )

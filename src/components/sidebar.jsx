@@ -11,6 +11,9 @@ import {
 } from "./styled.js";
 import Dropdown from "./dropdown.jsx";
 import SizeControl from "./InputContainer.jsx";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 // const colorPrices = {
 //   "#FFC1C1": 2,
@@ -159,6 +162,45 @@ const SideBar = (
 
   const combinedArray = [...options, ...imgArr];
   const allColors = [...new Set([...Object.keys(colorPrices), ...Object.keys(tileAssets)])];
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const tableColumn = ["Color", "Price", "Quantity", "Total"];
+    const tableRows = [];
+
+    allColors.forEach((color) => {
+      const count = tiles.filter(t => t === color).length;
+      const price = colorPrices[color] || 1;
+      if (count > 0) {
+        const rowData = [
+          getColorName(color),
+          `${price}$`,
+          count,
+          `${(count * price).toFixed(0)}$`
+        ];
+        tableRows.push(rowData);
+      }
+    });
+
+    autoTable(doc, { head: [tableColumn], body: tableRows, startY: 20 });
+
+
+    const newTableColumn = ["Total Price", "Needed Tiles", "With Reserve 10%", "Edges", "Corners", "Total Area"];
+    const newTableRows = [[
+      `${totalPrice.toFixed(2)}$`,
+      customNeededTiles,
+      tilesWithReserve,
+      edges,
+      corners,
+      totalArea
+    ]];
+
+    autoTable(doc, { head: [newTableColumn], body: newTableRows, startY: doc.lastAutoTable.finalY + 10 });
+
+
+    doc.text("Tile Calculation Summary", 14, 15);
+    doc.save("tile_calculation_summary.pdf");
+  };
 
   return(
     <InfoContainer isMobile={isMobile}>
@@ -411,8 +453,10 @@ const SideBar = (
         <div className="info-row request-section" style={{justifyContent: 'space-between'}}>
           <Text>Your design is ready! Submit your request</Text>
 
-          <button className='request-btn'>Request the quote</button>
+          <button onClick={generatePDF} className='request-btn'>Request the quote</button>
         </div>
+
+        <button className='request-btn'>Checkout</button>
       </InfoBlock>
     </InfoContainer>
   )
