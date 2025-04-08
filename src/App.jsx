@@ -25,7 +25,7 @@ const colorPrices = {
 };
 
 export default function App() {
-  const [unit, setUnit] = useState("m2");
+  const [unit, setUnit] = useState("ft2");
   const [selectedTile, setSelectedTile] = useState('GridMaxPro');
   const [installationType, setInstallationType] = useState('wallToWall');
   const [surfaceType, setSurfaceType] = useState('parquet');
@@ -100,8 +100,8 @@ export default function App() {
   }, [tileAssets]);
 
   useEffect(() => {
-    setTiles(Array(width * height).fill("#fff"));
-  }, [width, height]);
+    setTiles(Array(customNeededTiles).fill("#fff"));
+  }, [customNeededTiles]);
 
   const tilesX = Math.ceil(width / tileSize);
   const tilesY = Math.ceil(height / tileSize);
@@ -278,12 +278,14 @@ export default function App() {
         <div className="stage-container">
           <Stage width={stageWidth} height={stageHeight} style={{marginBottom: 15}}>
             <Layer>
-              {tiles.map((color, index) => {
+              {Array.from({ length: customNeededTiles }).map((_, index) => {
                 const tileWidth = Math.max(stageWidth / tilesX, minTileSize);
                 const tileHeight = Math.max(stageHeight / tilesY, minTileSize);
 
                 const x = (index % tilesX) * tileWidth;
                 const y = Math.floor(index / tilesX) * tileHeight;
+
+                const color = tiles[index] || "#fff";
 
                 const scaleX = 1;
                 const scaleY = 1;

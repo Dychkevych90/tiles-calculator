@@ -39,11 +39,6 @@ const colorPrices = {
   "#D3D3D3": 7.70  // Light Gray
 };
 
-// const options = [
-//   { value: "#FFC1C1", color: "#FFC1C1", label: "Red Tile" },
-//   { value: "#DDE2FF", color: "#DDE2FF", label: "Corner" },
-//   { value: "#D7DAE9", color: "#D7DAE9", label: "Edge" }
-// ];
 
 const options = [
   { value: "#FF0000", color: "#FF0000", label: "Red" },
@@ -207,31 +202,31 @@ const SideBar = (
       <InfoBlock type={'custom'}>
         <SubTitle>Tile Calculator</SubTitle>
 
-        <div className='info-row measurement'>
-          <Text style={{minWidth: '105px', textAlign: 'left'}}>Measurement:</Text>
+        {/*<div className='info-row measurement'>*/}
+        {/*  <Text style={{minWidth: '105px', textAlign: 'left'}}>Measurement:</Text>*/}
 
-          <RadioContainer>
-            <RadioLabel>
-              <RadioInput
-                type="radio"
-                value="m2"
-                checked={unit === "m2"}
-                onChange={(e) => setUnit(e.target.value)}
-              />
-              <Text>m²</Text>
-            </RadioLabel>
+        {/*  <RadioContainer>*/}
+        {/*    <RadioLabel>*/}
+        {/*      <RadioInput*/}
+        {/*        type="radio"*/}
+        {/*        value="m2"*/}
+        {/*        checked={unit === "m2"}*/}
+        {/*        onChange={(e) => setUnit(e.target.value)}*/}
+        {/*      />*/}
+        {/*      <Text>m²</Text>*/}
+        {/*    </RadioLabel>*/}
 
-            <RadioLabel>
-              <RadioInput
-                type="radio"
-                value="ft2"
-                checked={unit === "ft2"}
-                onChange={(e) => setUnit(e.target.value)}
-              />
-              <Text>ft²</Text>
-            </RadioLabel>
-          </RadioContainer>
-        </div>
+        {/*    <RadioLabel>*/}
+        {/*      <RadioInput*/}
+        {/*        type="radio"*/}
+        {/*        value="ft2"*/}
+        {/*        checked={unit === "ft2"}*/}
+        {/*        onChange={(e) => setUnit(e.target.value)}*/}
+        {/*      />*/}
+        {/*      <Text>ft²</Text>*/}
+        {/*    </RadioLabel>*/}
+        {/*  </RadioContainer>*/}
+        {/*</div>*/}
 
         <div className='info-row measurement'>
           <Text style={{minWidth: '105px', textAlign: 'left'}}>Installation:</Text>
@@ -264,7 +259,7 @@ const SideBar = (
             <input
               className='customInput'
               type="number"
-              placeholder='Enter doorway length m or ft'
+              placeholder='Enter doorway length ft'
               onChange={(e) => setDoorwayLength(e.target.value)}
               value={doorwayLength > 0 ? doorwayLength : ''}
             />
