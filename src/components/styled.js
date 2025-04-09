@@ -130,9 +130,18 @@ export const InfoBlock = styled.div`
         transition: .3s;
         border: none;
         cursor: pointer;
+        text-decoration: none;
 
         &:hover {
             background-color: #B52A21;
+        }
+
+        &:disabled {
+            background-color: #b29494
+        }
+        
+        &.disabled {
+            background-color: #b29494
         }
     }
 
@@ -157,7 +166,7 @@ export const InfoBlock = styled.div`
             margin-bottom: 10px;
         }
     }
-    
+
     .selected-tile {
         @media (max-width: 900px) {
             flex-direction: column;

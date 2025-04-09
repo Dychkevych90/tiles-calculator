@@ -15,28 +15,22 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
 
-// const colorPrices = {
-//   "#FFC1C1": 2,
-//   "#DDE2FF": 7,
-//   "#D7DAE9": 6,
-// };
-
 const colorPrices = {
-  "#000000": 7.70, // Black
-  "#FF0000": 7.70, // Red
-  "#808080": 7.70, // Gray
-  "#FFFFFF": 7.70, // White
-  "#0000FF": 7.70, // Blue
-  "#90EE90": 7.70, // Light Green
-  "#FFFF00": 7.70, // Yellow
-  "#FFD700": 7.70, // Gold
-  "#ADD8E6": 7.70, // Light Blue
-  "#008000": 7.70, // Green
-  "#800080": 7.70, // Purple
-  "#FFC0CB": 7.70, // Pink
-  "#FFA500": 7.70, // Orange
-  "#40E0D0": 7.70, // Turquoise
-  "#D3D3D3": 7.70  // Light Gray
+  "#000000": { id: 50528588267793, price: 7.70 }, // Black
+  "#FF0000": { id: 50449368088849, price: 7.70 }, // Red
+  "#808080": { id: 50528596361489, price: 7.70 }, // Gray
+  "#FFFFFF": { id: 50528603537681, price: 7.70 }, // White
+  "#0000FF": { id: 50528600654097, price: 7.70 }, // Blue
+  "#90EE90": { id: 50528593740049, price: 7.70 }, // Light Green
+  "#FFFF00": { id: 50528585253137, price: 7.70 }, // Yellow
+  "#FFD700": { id: 51095285793041, price: 7.70 }, // Gold
+  "#ADD8E6": { id: 51095287595281, price: 7.70 }, // Light Blue
+  "#008000": { id: 51095291560209, price: 7.70 }, // Green
+  "#800080": { id: 51095294116113, price: 7.70 }, // Purple
+  "#FFC0CB": { id: 51095301456145, price: 7.70 }, // Pink
+  "#FFA500": { id: 50528610091281, price: 7.70 }, // Orange
+  "#40E0D0": { id: 51096125440273, price: 7.70 }, // Turquoise
+  "#D3D3D3": { id: 51096299634961, price: 7.70 }  // Light Gray
 };
 
 
@@ -155,8 +149,26 @@ const SideBar = (
     };
   });
 
+  const generateDynamicUrl = () => {
+    const baseUrl = 'https://shopmodulux.com/cart/';
+    const urlParams = allColors
+      .filter(color => tiles.includes(color))
+      .map(color => {
+        const count = tiles.filter(t => t === color).length;
+        const id = colorPrices[color]?.id;
+        if(!id) return null;
+
+        return `${id}:${count}`;
+      })
+      .filter(Boolean)
+      .join(',');
+
+    return `${baseUrl}${urlParams}`;
+  };
+
   const combinedArray = [...options, ...imgArr];
   const allColors = [...new Set([...Object.keys(colorPrices), ...Object.keys(tileAssets)])];
+  const isDisabled = totalPrice === 0 || !allColors.some(color => tiles.includes(color));
 
   const generatePDF = () => {
     const doc = new jsPDF();
@@ -164,8 +176,10 @@ const SideBar = (
     const tableRows = [];
 
     allColors.forEach((color) => {
+      if(!colorPrices[color]?.price) return;
+
       const count = tiles.filter(t => t === color).length;
-      const price = colorPrices[color] || 1;
+      const price = colorPrices[color]?.price || 1;
       if (count > 0) {
         const rowData = [
           getColorName(color),
@@ -187,7 +201,7 @@ const SideBar = (
       tilesWithReserve,
       edges,
       corners,
-      totalArea
+      `${totalArea} ft2`
     ]];
 
     autoTable(doc, { head: [newTableColumn], body: newTableRows, startY: doc.lastAutoTable.finalY + 10 });
@@ -367,20 +381,20 @@ const SideBar = (
         </div>
       </InfoBlock>
 
-      <InfoBlock>
-        <div className="info-row">
-          <SubTitle style={{minWidth: 72}} >Surface</SubTitle>
+      {/*<InfoBlock>*/}
+      {/*  <div className="info-row">*/}
+      {/*    <SubTitle style={{minWidth: 72}} >Surface</SubTitle>*/}
 
-          <Dropdown
-            options={surfaceTypeOptions}
-            selectedValue={surfaceType}
-            onChange={(value) => setSurfaceType(value)}
-            handleImageUpload={() => {}}
-            tileAssets={{}}
-            customBtn={false}
-          />
-        </div>
-      </InfoBlock>
+      {/*    <Dropdown*/}
+      {/*      options={surfaceTypeOptions}*/}
+      {/*      selectedValue={surfaceType}*/}
+      {/*      onChange={(value) => setSurfaceType(value)}*/}
+      {/*      handleImageUpload={() => {}}*/}
+      {/*      tileAssets={{}}*/}
+      {/*      customBtn={false}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</InfoBlock>*/}
 
       <InfoBlock>
         <SubTitle>Summary</SubTitle>
@@ -402,11 +416,14 @@ const SideBar = (
               {
                 allColors.some(color => tiles.includes(color)) ? (
                   allColors.map((color) => {
+                    if(!colorPrices[color]?.price) return;
+
                     const count = tiles.filter(t => t === color).length;
-                    const price = colorPrices[color] || 1;
+                    const price = colorPrices[color].price || 1;
+                    const id = colorPrices[color].id || 1;
 
                     return count > 0 ? (
-                      <tr key={color}>
+                      <tr key={color} id={id}>
                         <td>
                           <div className='item'>
                             <span
@@ -448,10 +465,17 @@ const SideBar = (
         <div className="info-row request-section" style={{justifyContent: 'space-between'}}>
           <Text>Your design is ready! Submit your request</Text>
 
-          <button onClick={generatePDF} className='request-btn'>Request the quote</button>
+          <button disabled={totalPrice === 0} onClick={generatePDF} className='request-btn'>Request the quote</button>
         </div>
 
-        <button className='request-btn'>Checkout</button>
+        <a
+          href={isDisabled ? undefined : generateDynamicUrl()}
+          onClick={(e) => isDisabled && e.preventDefault()}
+          className={`request-btn ${isDisabled ? 'disabled' : ''}`}
+          target={isDisabled ? undefined : '_blank'}
+        >
+          Checkout
+        </a>
       </InfoBlock>
     </InfoContainer>
   )

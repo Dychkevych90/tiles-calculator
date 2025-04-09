@@ -26,7 +26,7 @@ const colorPrices = {
 
 export default function App() {
   const [unit, setUnit] = useState("ft2");
-  const [selectedTile, setSelectedTile] = useState('GridMaxPro');
+  const [selectedTile, setSelectedTile] = useState('PlayFlex');
   const [installationType, setInstallationType] = useState('wallToWall');
   const [surfaceType, setSurfaceType] = useState('parquet');
   const [width, setWidth] = useState(10);
