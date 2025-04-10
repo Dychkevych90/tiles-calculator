@@ -149,6 +149,7 @@ const SideBar = (
 
   const generatePDF = () => {
     const doc = new jsPDF();
+
     doc.text("Tile Calculation Summary", 14, 15);
 
     // Tiles Table
@@ -400,15 +401,15 @@ const SideBar = (
               <Text>GridMax Pro (40 cm² / 1.7213 sqft)</Text>
             </RadioLabel>
 
-            <RadioLabel>
-              <RadioInput
-                type="radio"
-                value="PlayFlex"
-                checked={selectedTile === "PlayFlex"}
-                onChange={(e) => setSelectedTile(e.target.value)}
-              />
-              <Text>PlayFlex (30.5 cm² / 1.0013 sqft)</Text>
-            </RadioLabel>
+            {/*<RadioLabel>*/}
+            {/*  <RadioInput*/}
+            {/*    type="radio"*/}
+            {/*    value="PlayFlex"*/}
+            {/*    checked={selectedTile === "PlayFlex"}*/}
+            {/*    onChange={(e) => setSelectedTile(e.target.value)}*/}
+            {/*  />*/}
+            {/*  <Text>PlayFlex (30.5 cm² / 1.0013 sqft)</Text>*/}
+            {/*</RadioLabel>*/}
           </RadioContainer>
         </div>
 
@@ -519,7 +520,7 @@ const SideBar = (
 
             <div className="info-row">
               <Dropdown
-                options={options}
+                options={options.filter(option =>["#000000", "#808080", "#D3D3D3"].includes(option.value))}
                 selectedValue={selectedCornersColor}
                 onChange={(value) => setSelectedCornersColor(value)}
                 handleImageUpload={handleImageUpload}
