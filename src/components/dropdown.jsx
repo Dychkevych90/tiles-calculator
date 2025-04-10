@@ -3,7 +3,17 @@ import {StyledSelect, Text} from "./styled.js";
 import ArrowIcon from '../../public/arrow.svg';
 import crossIcon from '../../public/crossIcon.svg';
 
-const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAssets, customBtn = true }) => {
+const Dropdown = (
+  {
+    options,
+    selectedValue,
+    onChange,
+    handleImageUpload,
+    tileAssets,
+    customBtn = true,
+    fullWidth = false,
+    requiered = false
+  }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -26,7 +36,7 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
   }, []);
 
   return (
-    <StyledSelect isOpen={isOpen} ref={dropdownRef}>
+    <StyledSelect isOpen={isOpen} ref={dropdownRef} fullWidth={fullWidth}>
       <div className="dropdown-selected" onClick={() => setIsOpen(!isOpen)}>
         {tileAssets[selectedValue] ? (
           <img
@@ -51,7 +61,11 @@ const Dropdown = ({ options, selectedValue, onChange, handleImageUpload, tileAss
             }}
           />
         )}
-        <Text>{options.find(option => option.value === selectedValue)?.label || selectedValue}</Text>
+        {
+          selectedValue === 'please add edges color' || selectedValue === 'please add corners color'
+          ? <Text style={{color: 'gray', marginLeft: '-24px'}}>{selectedValue}</Text>
+            : <Text>{options.find(option => option.value === selectedValue)?.label || selectedValue}</Text>
+        }
         <img src={ArrowIcon} alt="Arrow Icon" className="arrow-icon" />
       </div>
 

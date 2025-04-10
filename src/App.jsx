@@ -46,27 +46,6 @@ export default function App() {
     PlayFlex: { m2: 0.093025, ft2: 1.0013 }
   };
 
-  // const tileSizes = {
-  //   GridMaxPro: { sizeM: 0.4, sizeFt: 1.312 },  // 40cm = 0.4m (approx 1.312 ft)
-  //   PlayFlex: { sizeM: 0.35, sizeFt: 1.148 }    // 35cm = 0.35m (approx 1.148 ft)
-  // };
-  //
-  // const calculateNeededTiles = (widthInTiles, heightInTiles, tileType, unit) => {
-  //   if (!tileType || !tileSizes[tileType]) {
-  //     return { customTotalArea: 0, customNeededTiles: 0 };
-  //   }
-  //
-  //   const tileSize = unit === 'm2' ? tileSizes[tileType].sizeM : tileSizes[tileType].sizeFt;
-  //
-  //   const totalWidth = widthInTiles * tileSize;
-  //   const totalHeight = heightInTiles * tileSize;
-  //
-  //   const customTotalArea = totalWidth * totalHeight;
-  //   const customNeededTiles = widthInTiles * heightInTiles;
-  //
-  //   return { customTotalArea, customNeededTiles };
-  // };
-
   const calculateNeededTiles = (width, height, tileType, unit) => {
     if (!tileType || !tileSizes[tileType]) {
       return { customTotalArea: 0, customNeededTiles: 0 };
@@ -100,11 +79,8 @@ export default function App() {
   }, [tileAssets]);
 
   useEffect(() => {
-    setTiles(Array(customNeededTiles).fill("#fff"));
-  }, [customNeededTiles]);
-
-  const tilesX = Math.ceil(width / tileSize);
-  const tilesY = Math.ceil(height / tileSize);
+    setTiles(Array(width * height).fill("#fff"));
+  }, [width * height]);
 
   const handleTileClick = (index) => {
     setTiles((prev) => {
@@ -122,17 +98,24 @@ export default function App() {
   const stageWidth = Math.max(width * minTileSize, 400);
   const stageHeight = Math.max(height * minTileSize, 400);
 
-  const handleMouseDown = () => setDrawing(true);
-
-  const handleMouseUp = () => setDrawing(false);
-
   const handleMouseMove = (e) => {
-    //if(installationType === 'wallToWall') return;
     if (!drawing) return;
-    const { x, y } = e.target.getStage().getPointerPosition();
-    const tileX = Math.floor(x / (stageWidth / tilesX));
-    const tileY = Math.floor(y / (stageHeight / tilesY));
-    const index = tileY * tilesX + tileX;
+    const stage = e.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
+
+    if (!pointerPosition) return;
+
+    const { x, y } = pointerPosition;
+
+    const tileWidth = stageWidth / tilesXFull;
+    const tileHeight = stageHeight / tilesYFull;
+
+    const tileX = Math.floor(x / tileWidth);
+    const tileY = Math.floor(y / tileHeight);
+
+    const index = tileY * tilesXFull + tileX;
+
+    if (tileX >= tilesXFull || tileY >= tilesYFull || index >= tiles.length || index < 0) return;
 
     setTiles((prev) => {
       const newTiles = [...prev];
@@ -140,6 +123,13 @@ export default function App() {
       return newTiles;
     });
   };
+
+  const handleMouseDown = (e) => {
+    setDrawing(true);
+    handleMouseMove(e);  // allow immediate tile coloring
+  };
+
+  const handleMouseUp = () => setDrawing(false);
 
   const totalArea = width * height;
   const tileArea = tileSize * tileSize;
@@ -151,6 +141,8 @@ export default function App() {
 
   const clearTiles = () => {
     setTiles(Array(width * height).fill("#fff"));
+    setDoorwayLength(0)
+    setTileAssets({})
   };
 
   useEffect(() => {
@@ -169,8 +161,8 @@ export default function App() {
         : tileSizes[selectedTile].edgeFt;
 
     if (installationType === "wallToWall") {
-      const perimeter = 2 * (width + height);
-      const effectivePerimeter = perimeter - doorwayLength;
+      //const perimeter = 2 * (width + height);
+      //const effectivePerimeter = perimeter - doorwayLength;
 
       const edges = Math.ceil(doorwayLength / tileEdgeLength);
       //const edges = doorwayLength;
@@ -220,6 +212,13 @@ export default function App() {
     }
     return { edges: 0, corners: 0 };
   };
+
+  const tileSideFt = Math.sqrt(tileSizes[selectedTile].ft2);
+  const tilesXExact = width / tileSideFt;
+  const tilesYExact = height / tileSideFt;
+
+  const tilesXFull = Math.ceil(tilesXExact);
+  const tilesYFull = Math.ceil(tilesYExact);
 
   return (
     <>
@@ -278,30 +277,28 @@ export default function App() {
         <div className="stage-container">
           <Stage width={stageWidth} height={stageHeight} style={{marginBottom: 15}}>
             <Layer>
-              {Array.from({ length: customNeededTiles }).map((_, index) => {
-                const tileWidth = Math.max(stageWidth / tilesX, minTileSize);
-                const tileHeight = Math.max(stageHeight / tilesY, minTileSize);
+              {Array.from({ length: tilesXFull * tilesYFull }).map((_, index) => {
+                const tileWidth = stageWidth / tilesXFull;
+                const tileHeight = stageHeight / tilesYFull;
 
-                const x = (index % tilesX) * tileWidth;
-                const y = Math.floor(index / tilesX) * tileHeight;
+                const col = index % tilesXFull;
+                const row = Math.floor(index / tilesXFull);
+
+                const x = col * tileWidth;
+                const y = row * tileHeight;
 
                 const color = tiles[index] || "#fff";
-
-                const scaleX = 1;
-                const scaleY = 1;
-
-                const centeredX = x + (tileWidth - 32 * scaleX) / 4;
-                const centeredY = y + (tileHeight - 32 * scaleY) / 4;
                 const image = images[color];
+
 
                 return image && image.complete ? (
                   <Image
                     key={index}
                     image={image}
-                    x={centeredX}
-                    y={centeredY}
-                    width={39}
-                    height={39}
+                    x={x}
+                    y={y}
+                    width={tileWidth}
+                    height={tileHeight}
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
@@ -330,6 +327,35 @@ export default function App() {
                   />
                 );
               })}
+
+
+              <Rect
+                x={0}
+                y={0}
+                width={(tilesXExact / tilesXFull) * stageWidth}
+                height={(tilesYExact / tilesYFull) * stageHeight}
+                stroke="red"
+                strokeWidth={3}
+                listening={false}
+              />
+
+              <Rect
+                x={(tilesXExact / tilesXFull) * stageWidth}
+                y={0}
+                width={stageWidth - (tilesXExact / tilesXFull) * stageWidth}
+                height={stageHeight}
+                fill="rgba(255,255,255,0.6)"
+                listening={false}
+              />
+
+              <Rect
+                x={0}
+                y={(tilesYExact / tilesYFull) * stageHeight}
+                width={(tilesXExact / tilesXFull) * stageWidth}
+                height={stageHeight - (tilesYExact / tilesYFull) * stageHeight}
+                fill="rgba(255,255,255,0.6)"
+                listening={false}
+              />
             </Layer>
           </Stage>
         </div>

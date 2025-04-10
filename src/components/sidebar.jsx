@@ -16,23 +16,22 @@ import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
 
 const colorPrices = {
-  "#000000": { id: 50528588267793, price: 7.70 }, // Black
-  "#FF0000": { id: 50449368088849, price: 7.70 }, // Red
-  "#808080": { id: 50528596361489, price: 7.70 }, // Gray
-  "#FFFFFF": { id: 50528603537681, price: 7.70 }, // White
-  "#0000FF": { id: 50528600654097, price: 7.70 }, // Blue
-  "#90EE90": { id: 50528593740049, price: 7.70 }, // Light Green
-  "#FFFF00": { id: 50528585253137, price: 7.70 }, // Yellow
-  "#FFD700": { id: 51095285793041, price: 7.70 }, // Gold
-  "#ADD8E6": { id: 51095287595281, price: 7.70 }, // Light Blue
-  "#008000": { id: 51095291560209, price: 7.70 }, // Green
-  "#800080": { id: 51095294116113, price: 7.70 }, // Purple
-  "#FFC0CB": { id: 51095301456145, price: 7.70 }, // Pink
-  "#FFA500": { id: 50528610091281, price: 7.70 }, // Orange
-  "#40E0D0": { id: 51096125440273, price: 7.70 }, // Turquoise
-  "#D3D3D3": { id: 51096299634961, price: 7.70 }  // Light Gray
+  "#000000": { id: 50528588267793, price: 7.70, edgesId: 51096886182161, cornersId: 51096702910737, edgePrice: 4.50, cornerPrice: 3.49 }, // Black
+  "#FF0000": { id: 50449368088849, price: 7.70, edgesId: 51096914526481, cornersId: 51096727617809, edgePrice: 4.50, cornerPrice: 3.49 }, // Red
+  "#808080": { id: 50528596361489, price: 7.70, edgesId: null, cornersId: 51096783257873, edgePrice: 4.50, cornerPrice: 3.49 }, // Gray
+  "#FFFFFF": { id: 50528603537681, price: 7.70, edgesId: 51097491996945, cornersId: 51096795873553, edgePrice: 4.50, cornerPrice: 3.49 }, // White
+  "#0000FF": { id: 50528600654097, price: 7.70, edgesId: null, cornersId: 51096737120529, edgePrice: 4.50, cornerPrice: 3.49 }, // Blue
+  "#90EE90": { id: 50528593740049, price: 7.70, edgesId: 51097363742993, cornersId: 51096759042321, edgePrice: 4.50, cornerPrice: 3.49 }, // Light Green
+  "#FFFF00": { id: 50528585253137, price: 7.70, edgesId: 51096898437393, cornersId: 51096722768145, edgePrice: 4.50, cornerPrice: 3.49 }, // Yellow
+  "#FFD700": { id: 51095285793041, price: 7.70, edgesId: 51096905285905, cornersId: 51096816320785, edgePrice: 4.50, cornerPrice: 3.49 }, // Gold
+  "#ADD8E6": { id: 51095287595281, price: 7.70, edgesId: 51097552191761, cornersId: 51096764285201, edgePrice: 4.50, cornerPrice: 3.49 }, // Light Blue
+  "#008000": { id: 51095291560209, price: 7.70, edgesId: 51096918393105, cornersId: 51096744853777, edgePrice: 4.50, cornerPrice: 3.49 }, // Green
+  "#800080": { id: 51095294116113, price: 7.70, edgesId: 51096909873425, cornersId: 51096733188369, edgePrice: 4.50, cornerPrice: 3.49 }, // Purple
+  "#FFC0CB": { id: 51095301456145, price: 7.70, edgesId: 51096900206865, cornersId: 51096718934289, edgePrice: 4.50, cornerPrice: 3.49 }, // Pink
+  "#FFA500": { id: 50528610091281, price: 7.70, edgesId: 51097620218129, cornersId: 51096854167825, edgePrice: 4.50, cornerPrice: 3.49}, // Orange
+  "#40E0D0": { id: 51096125440273, price: 7.70, edgesId: 51097576800529, cornersId: 51096749146385, edgePrice: 4.50, cornerPrice: 3.49 }, // Turquoise
+  "#D3D3D3": { id: 51096299634961, price: 7.70, edgesId: null, cornersId: 51096793022737, edgePrice: 4.50, cornerPrice: 3.49 }  // Light Gray
 };
-
 
 const options = [
   { value: "#FF0000", color: "#FF0000", label: "Red" },
@@ -50,12 +49,6 @@ const options = [
   { value: "#FFC0CB", color: "#FFC0CB", label: "Pink" },
   { value: "#FFA500", color: "#FFA500", label: "Orange" },
   { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray" }
-];
-
-const surfaceTypeOptions = [
-  { value: "concrete", color: "concrete", label: "Concrete" },
-  { value: "parquet", color: "parquet", label: "Parquet" },
-  { value: "asphalt", color: "asphalt", label: "Asphalt" },
 ];
 
 const SideBar = (
@@ -91,6 +84,8 @@ const SideBar = (
     customTotalArea,
     customNeededTiles,
   }) => {
+  const [selectedEdgesColor, setSelectedEdgesColor] = React.useState("please add edges color");
+  const [selectedCornersColor, setSelectedCornersColor] = React.useState("please add corners color");
 
   const { edges, corners } = calculateEdgesAndCorners();
 
@@ -149,66 +144,177 @@ const SideBar = (
     };
   });
 
-  const generateDynamicUrl = () => {
-    const baseUrl = 'https://shopmodulux.com/cart/';
-    const urlParams = allColors
-      .filter(color => tiles.includes(color))
-      .map(color => {
-        const count = tiles.filter(t => t === color).length;
-        const id = colorPrices[color]?.id;
-        if(!id) return null;
-
-        return `${id}:${count}`;
-      })
-      .filter(Boolean)
-      .join(',');
-
-    return `${baseUrl}${urlParams}`;
-  };
-
   const combinedArray = [...options, ...imgArr];
   const allColors = [...new Set([...Object.keys(colorPrices), ...Object.keys(tileAssets)])];
-  const isDisabled = totalPrice === 0 || !allColors.some(color => tiles.includes(color));
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    const tableColumn = ["Color", "Price", "Quantity", "Total"];
-    const tableRows = [];
+    doc.text("Tile Calculation Summary", 14, 15);
+
+    // Tiles Table
+    const tileTableColumn = ["Color", "Price", "Quantity", "Total"];
+    const tileTableRows = [];
+    let tilesTotalPrice = 0;
 
     allColors.forEach((color) => {
-      if(!colorPrices[color]?.price) return;
-
-      const count = tiles.filter(t => t === color).length;
+      const count = tiles.filter((t) => t === color).length;
       const price = colorPrices[color]?.price || 1;
       if (count > 0) {
-        const rowData = [
+        const total = count * price;
+        tilesTotalPrice += total;
+        tileTableRows.push([
           getColorName(color),
           `${price}$`,
           count,
-          `${(count * price).toFixed(0)}$`
-        ];
-        tableRows.push(rowData);
+          `${total.toFixed(2)}$`,
+        ]);
       }
     });
 
-    autoTable(doc, { head: [tableColumn], body: tableRows, startY: 20 });
+    autoTable(doc, {
+      head: [tileTableColumn],
+      body: tileTableRows,
+      startY: 20,
+    });
 
+    const edgeCornerTableColumn = ["Type", "Color", "Price", "Quantity", "Total"];
+    const edgeCornerTableRows = [];
+    let edgesCornersTotalPrice = 0;
 
-    const newTableColumn = ["Total Price", "Needed Tiles", "With Reserve 10%", "Edges", "Corners", "Total Area"];
-    const newTableRows = [[
-      `${totalPrice.toFixed(2)}$`,
-      customNeededTiles,
-      tilesWithReserve,
-      edges,
-      corners,
-      `${totalArea} ft2`
-    ]];
+    if (selectedEdgesColor && edges > 0) {
+      const edgePrice = colorPrices[selectedEdgesColor]?.edgePrice || 0;
+      const edgeTotal = edges * edgePrice;
+      edgesCornersTotalPrice += edgeTotal;
 
-    autoTable(doc, { head: [newTableColumn], body: newTableRows, startY: doc.lastAutoTable.finalY + 10 });
+      edgeCornerTableRows.push([
+        "Edges",
+        getColorName(selectedEdgesColor),
+        `${edgePrice}$`,
+        edges,
+        `${edgeTotal.toFixed(2)}$`,
+      ]);
+    }
 
+    if (selectedCornersColor && corners > 0) {
+      const cornerPrice = colorPrices[selectedCornersColor]?.cornerPrice || 0;
+      const cornerTotal = corners * cornerPrice;
+      edgesCornersTotalPrice += cornerTotal;
 
-    doc.text("Tile Calculation Summary", 14, 15);
+      edgeCornerTableRows.push([
+        "Corners",
+        getColorName(selectedCornersColor),
+        `${cornerPrice}$`,
+        corners,
+        `${cornerTotal.toFixed(2)}$`,
+      ]);
+    }
+
+    if (edgeCornerTableRows.length > 0) {
+      autoTable(doc, {
+        head: [edgeCornerTableColumn],
+        body: edgeCornerTableRows,
+        startY: doc.lastAutoTable.finalY + 10,
+      });
+    }
+
+    const finalTotalPrice = tilesTotalPrice + edgesCornersTotalPrice;
+
+    const summaryTableColumn = [
+      "Total Price",
+      "Needed Tiles",
+      "With Reserve 10%",
+      "Edges",
+      "Corners",
+      "Total Area",
+    ];
+
+    const summaryTableRows = [
+      [
+        `${finalTotalPrice.toFixed(2)}$`,
+        customNeededTiles,
+        tilesWithReserve,
+        edges,
+        corners,
+        `${totalArea} ft²`,
+      ],
+    ];
+
+    autoTable(doc, {
+      head: [summaryTableColumn],
+      body: summaryTableRows,
+      startY: doc.lastAutoTable.finalY + 10,
+    });
+
     doc.save("tile_calculation_summary.pdf");
+  };
+
+  const getTotalPrice = () => {
+    let total = 0;
+
+    allColors.forEach(color => {
+      const count = tiles.filter(t => t === color).length;
+      const price = colorPrices[color]?.price || 30;
+      if (price && count > 0) {
+        total += count * price;
+      }
+    });
+
+    if (selectedEdgesColor && edges > 0) {
+      const edgePrice = colorPrices[selectedEdgesColor]?.edgePrice;
+      if (edgePrice) {
+        total += edges * edgePrice;
+      }
+    }
+
+    if (selectedCornersColor && corners > 0) {
+      const cornerPrice = colorPrices[selectedCornersColor]?.cornerPrice;
+      if (cornerPrice) {
+        total += corners * cornerPrice;
+      }
+    }
+
+    return total.toFixed(2);
+  };
+
+  const isDisabled =
+    getTotalPrice() === 0 ||
+    !allColors.some(color => tiles.includes(color)) ||
+    (edges > 0 && selectedEdgesColor === 'please add edges color') ||
+    (corners > 0 && selectedCornersColor === 'please add corners color')
+
+  const generateDynamicUrl = () => {
+    const baseUrl = 'https://shopmodulux.com/cart/';
+    const tileParams = allColors
+      .map(color => {
+        const count = tiles.filter(t => t === color).length;
+        if (count === 0) return null;
+
+        const id = colorPrices[color]?.id ?? 51415320396049;
+        return `${id}:${count}`;
+      })
+      .filter(Boolean);
+
+    const edgeParam = (() => {
+      if (!selectedEdgesColor || edges <= 0) return null;
+      const edgeId = colorPrices[selectedEdgesColor]?.edgesId;
+      if (!edgeId) return null;
+      return `${edgeId}:${edges}`;
+    })();
+
+    const cornerParam = (() => {
+      if (!selectedCornersColor || corners <= 0) return null;
+      const cornerId = colorPrices[selectedCornersColor]?.cornersId;
+      if (!cornerId) return null;
+      return `${cornerId}:${corners}`;
+    })();
+
+    const allParams = [
+      ...tileParams,
+      edgeParam,
+      cornerParam
+    ].filter(Boolean).join(',');
+
+    return `${baseUrl}${allParams}`;
   };
 
   return(
@@ -381,20 +487,55 @@ const SideBar = (
         </div>
       </InfoBlock>
 
-      {/*<InfoBlock>*/}
-      {/*  <div className="info-row">*/}
-      {/*    <SubTitle style={{minWidth: 72}} >Surface</SubTitle>*/}
+      {
+        edges > 0 && (
+          <InfoBlock>
+            <SubTitle style={{minWidth: 72}}>Select Edges color</SubTitle>
 
-      {/*    <Dropdown*/}
-      {/*      options={surfaceTypeOptions}*/}
-      {/*      selectedValue={surfaceType}*/}
-      {/*      onChange={(value) => setSurfaceType(value)}*/}
-      {/*      handleImageUpload={() => {}}*/}
-      {/*      tileAssets={{}}*/}
-      {/*      customBtn={false}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*</InfoBlock>*/}
+            <div className="info-row">
+              <Dropdown
+                options={options}
+                selectedValue={selectedEdgesColor}
+                onChange={(value) => setSelectedEdgesColor(value)}
+                handleImageUpload={handleImageUpload}
+                tileAssets={tileAssets}
+                fullWidth={true}
+                customBtn={false}
+                requiered={true}
+              />
+            </div>
+
+            {
+              selectedEdgesColor === 'please add edges color' && <div className='required'>*required</div>
+            }
+          </InfoBlock>
+        )
+      }
+
+      {
+        corners > 0 && (
+          <InfoBlock>
+            <SubTitle style={{minWidth: 72}}>Select Corners color</SubTitle>
+
+            <div className="info-row">
+              <Dropdown
+                options={options}
+                selectedValue={selectedCornersColor}
+                onChange={(value) => setSelectedCornersColor(value)}
+                handleImageUpload={handleImageUpload}
+                tileAssets={tileAssets}
+                fullWidth={true}
+                customBtn={false}
+                requiered={true}
+              />
+            </div>
+
+            {
+              selectedCornersColor === 'please add corners color' && <div className='required'>*required</div>
+            }
+          </InfoBlock>
+        )
+      }
 
       <InfoBlock>
         <SubTitle>Summary</SubTitle>
@@ -416,11 +557,11 @@ const SideBar = (
               {
                 allColors.some(color => tiles.includes(color)) ? (
                   allColors.map((color) => {
-                    if(!colorPrices[color]?.price) return;
+                    //if(!colorPrices[color]?.price) return;
 
                     const count = tiles.filter(t => t === color).length;
-                    const price = colorPrices[color].price || 1;
-                    const id = colorPrices[color].id || 1;
+                    const price = colorPrices[color]?.price || 30;
+                    const id = colorPrices[color]?.id || 30;
 
                     return count > 0 ? (
                       <tr key={color} id={id}>
@@ -441,7 +582,9 @@ const SideBar = (
                         </td>
                         <td><Text>{price}$</Text></td>
                         <td><Text>{count}</Text></td>
-                        <td style={{textAlign: 'left'}}><b>{(count * price).toFixed(0)}$</b></td>
+                        <td style={{ textAlign: 'left' }}>
+                          <b>{(count * price).toFixed(0)}$</b>
+                        </td>
                       </tr>
                     ) : null;
                   })
@@ -451,13 +594,89 @@ const SideBar = (
                   </tr>
                 )
               }
+
+              {
+                allColors.some(color => tiles.includes(color)) && (
+                  allColors.map((color) => {
+                    if(!colorPrices[color]?.edgesId) return;
+
+                    const isEdgeColor = color === selectedEdgesColor;
+
+                    const edgeId = isEdgeColor ? colorPrices[color]?.edgesId : null;
+                    const edgePrice = isEdgeColor ? colorPrices[color]?.edgePrice : null;
+
+                    return edges > 0 && isEdgeColor ? (
+                      <tr key={color} id={edgeId}>
+                        <td>
+                          <div className='item'>
+                            <span
+                              style={{
+                                backgroundColor: color,
+                                width: isMobile ? '24px' : '32px',
+                                height: isMobile ? '24px' : '32px',
+                                display: 'inline-block',
+                                marginRight: '8px',
+                                borderRadius: '8px',
+                              }}
+                            />
+                            <p>{getColorName(color)} Edge</p>
+                          </div>
+                        </td>
+                        <td><Text>{edgePrice}$</Text></td>
+                        <td><Text>{edges}</Text></td>
+                        <td style={{ textAlign: 'left' }}>
+                          <b>{(edges * edgePrice).toFixed(0)}$</b>
+                        </td>
+                      </tr>
+                    ) : null;
+                  })
+                )
+              }
+
+              {
+                allColors.some(color => tiles.includes(color)) && (
+                  allColors.map((color) => {
+                    if(!colorPrices[color]?.cornersId) return;
+
+                    const isEdgeColor = color === selectedCornersColor;
+
+                    const edgeId = isEdgeColor ? colorPrices[color]?.cornersId : null;
+                    const edgePrice = isEdgeColor ? colorPrices[color]?.cornerPrice : null;
+
+                    return corners > 0 && isEdgeColor ? (
+                      <tr key={color} id={edgeId}>
+                        <td>
+                          <div className='item'>
+                            <span
+                              style={{
+                                backgroundColor: color,
+                                width: isMobile ? '24px' : '32px',
+                                height: isMobile ? '24px' : '32px',
+                                display: 'inline-block',
+                                marginRight: '8px',
+                                borderRadius: '8px',
+                              }}
+                            />
+                            <p>{getColorName(color)} Corners</p>
+                          </div>
+                        </td>
+                        <td><Text>{edgePrice}$</Text></td>
+                        <td><Text>{corners}</Text></td>
+                        <td style={{ textAlign: 'left' }}>
+                          <b>{(corners * edgePrice).toFixed(0)}$</b>
+                        </td>
+                      </tr>
+                    ) : null;
+                  })
+                )
+              }
             </tbody>
           </table>
         </div>
 
         <div className="info-row summary">
           <BoldText>Total price:</BoldText>
-          <BoldText>{totalPrice.toFixed(2)}$</BoldText>
+          <BoldText>{getTotalPrice()}$</BoldText>
         </div>
       </InfoBlock>
 
@@ -465,7 +684,7 @@ const SideBar = (
         <div className="info-row request-section" style={{justifyContent: 'space-between'}}>
           <Text>Your design is ready! Submit your request</Text>
 
-          <button disabled={totalPrice === 0} onClick={generatePDF} className='request-btn'>Request the quote</button>
+          <button disabled={isDisabled} onClick={generatePDF} className='request-btn'>Request the quote</button>
         </div>
 
         <a

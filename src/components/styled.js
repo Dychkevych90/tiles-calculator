@@ -166,6 +166,13 @@ export const InfoBlock = styled.div`
             margin-bottom: 10px;
         }
     }
+    
+    .required {
+        text-align: left;
+        font-size: 13px;
+        margin-top: -20px;
+        color: red;
+    }
 
     .selected-tile {
         @media (max-width: 900px) {
@@ -315,13 +322,14 @@ export const StyledSelect = styled.div`
     border: 1px solid #ccc;
     cursor: pointer;
     color: #000;
-    margin-left: 20px;
+    margin-left: ${(fullWidth) => fullWidth ? '0' : '20px'};
     //min-height: 40px;
     min-width: 290px;
     position: relative;
     border-bottom-left-radius: ${({isOpen}) => isOpen ? '0' : '8px'};
     border-bottom-right-radius: ${({isOpen}) => isOpen ? '0' : '8px'};
     border-bottom: ${({isOpen}) => isOpen ? 'none' : '1px solid #ccc'};
+    width: ${(fullWidth) => fullWidth ? '100%' : 'unset'};
 
     @media (max-width: 900px) {
         min-width: 244px;
