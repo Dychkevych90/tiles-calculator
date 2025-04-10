@@ -495,7 +495,7 @@ const SideBar = (
 
             <div className="info-row">
               <Dropdown
-                options={options}
+                options={options.filter(option => !["#000000", "#808080", "#D3D3D3"].includes(option.value))}
                 selectedValue={selectedEdgesColor}
                 onChange={(value) => setSelectedEdgesColor(value)}
                 handleImageUpload={handleImageUpload}
