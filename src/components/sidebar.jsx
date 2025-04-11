@@ -30,7 +30,7 @@ const colorPrices = {
   "#FFC0CB": { id: 51095301456145, price: 7.70, edgesId: 51096900206865, cornersId: 51096718934289, edgePrice: 4.50, cornerPrice: 3.49 }, // Pink
   "#FFA500": { id: 50528610091281, price: 7.70, edgesId: 51097620218129, cornersId: 51096854167825, edgePrice: 4.50, cornerPrice: 3.49}, // Orange
   "#40E0D0": { id: 51096125440273, price: 7.70, edgesId: 51097576800529, cornersId: 51096749146385, edgePrice: 4.50, cornerPrice: 3.49 }, // Turquoise
-  "#D3D3D3": { id: 51096299634961, price: 7.70, edgesId: null, cornersId: 51096793022737, edgePrice: 4.50, cornerPrice: 3.49 }  // Light Gray
+  "#D3D3D3": { id: 51096299634961, price: 7.70, edgesId: 51097385337105, cornersId: 51096793022737, edgePrice: 4.50, cornerPrice: 3.49 }  // Light Gray
 };
 
 const options = [
@@ -495,7 +495,7 @@ const SideBar = (
 
             <div className="info-row">
               <Dropdown
-                options={options.filter(option => !["#000000", "#808080", "#D3D3D3"].includes(option.value))}
+                options={options.filter(option => ["#000000", "#D3D3D3"].includes(option.value))}
                 selectedValue={selectedEdgesColor}
                 onChange={(value) => setSelectedEdgesColor(value)}
                 handleImageUpload={handleImageUpload}
