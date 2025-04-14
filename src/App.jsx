@@ -26,7 +26,7 @@ const colorPrices = {
 };
 
 const initialTileAssets = {
-  "#000000": 'tiles/black2.png',
+  "#000000": '/tiles/black2.png',
   '#FFFF00': '/tiles/yellow.png',
   '#FFC0CB': '/tiles/pink.png',
   '#800080': '/tiles/purple.png',

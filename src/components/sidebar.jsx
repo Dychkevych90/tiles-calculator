@@ -15,6 +15,24 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
 
+const initialTileAssets = {
+  "#000000": '/tiles/black2.png',
+  '#FFFF00': '/tiles/yellow.png',
+  '#FFC0CB': '/tiles/pink.png',
+  '#800080': '/tiles/purple.png',
+  '#FFFFFF': '/tiles/white.png',
+  '#ADD8E6': '/tiles/lightBlue.png',
+  '#008000': '/tiles/green.png',
+  '#40E0D0': '/tiles/Turquoise.png',
+  '#FFD700': '/tiles/gold.png',
+  '#D3D3D3': '/tiles/lightGrey.png',
+  '#FFA500': '/tiles/red.png',
+  '#0000FF': '/tiles/blue.png',
+  '#FF0000': '/tiles/red2.png',
+  '#808080': '/tiles/grey.png',
+  '#90EE90': '/tiles/lightGreen.png',
+};
+
 const colorPrices = {
   "#000000": { id: 50528588267793, price: 7.70, edgesId: 51096886182161, cornersId: 51096702910737, edgePrice: 4.50, cornerPrice: 3.49 }, // Black
   "#FF0000": { id: 50449368088849, price: 7.70, edgesId: 51096914526481, cornersId: 51096727617809, edgePrice: 4.50, cornerPrice: 3.49 }, // Red
@@ -34,21 +52,21 @@ const colorPrices = {
 };
 
 const options = [
-  { value: "#000000", color: "#000000", label: "Black" },
-  { value: "#808080", color: "#808080", label: "Gray" },
-  { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray" },
-  { value: "#FF0000", color: "#FF0000", label: "Red" },
-  { value: "#40E0D0", color: "#40E0D0", label: "Turquoise" },
-  { value: "#FFFFFF", color: "#FFFFFF", label: "White" },
-  { value: "#0000FF", color: "#0000FF", label: "Blue" },
-  { value: "#90EE90", color: "#90EE90", label: "Light Green" },
-  { value: "#FFFF00", color: "#FFFF00", label: "Yellow" },
-  { value: "#FFD700", color: "#FFD700", label: "Gold" },
-  { value: "#ADD8E6", color: "#ADD8E6", label: "Light Blue" },
-  { value: "#008000", color: "#008000", label: "Green" },
-  { value: "#800080", color: "#800080", label: "Purple" },
-  { value: "#FFC0CB", color: "#FFC0CB", label: "Pink" },
-  { value: "#FFA500", color: "#FFA500", label: "Orange" },
+  { value: "#000000", color: "#000000", label: "Black", src: '/tiles/black2.png' },
+  { value: "#808080", color: "#808080", label: "Gray", src: '/tiles/grey.png' },
+  { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray", src: '/tiles/lightGrey.png' },
+  { value: "#FF0000", color: "#FF0000", label: "Red", src: '/tiles/red2.png' },
+  { value: "#40E0D0", color: "#40E0D0", label: "Turquoise", src: '/tiles/Turquoise.png' },
+  { value: "#FFFFFF", color: "#FFFFFF", label: "White", src: '/tiles/white.png' },
+  { value: "#0000FF", color: "#0000FF", label: "Blue", src: '/tiles/blue.png' },
+  { value: "#90EE90", color: "#90EE90", label: "Light Green", src: '/tiles/lightGreen.png' },
+  { value: "#FFFF00", color: "#FFFF00", label: "Yellow", src: '/tiles/yellow.png' },
+  { value: "#FFD700", color: "#FFD700", label: "Gold", src: '/tiles/gold.png' },
+  { value: "#ADD8E6", color: "#ADD8E6", label: "Light Blue", src: '/tiles/lightBlue.png' },
+  { value: "#008000", color: "#008000", label: "Green", src: '/tiles/green.png' },
+  { value: "#800080", color: "#800080", label: "Purple", src: '/tiles/purple.png' },
+  { value: "#FFC0CB", color: "#FFC0CB", label: "Pink", src: '/tiles/pink.png' },
+  { value: "#FFA500", color: "#FFA500", label: "Orange", src: '/tiles/red.png' },
 ];
 
 const SideBar = (
@@ -583,16 +601,31 @@ const SideBar = (
                       <tr key={color} id={id}>
                         <td>
                           <div className='item'>
-                            <span
-                              style={{
-                                backgroundColor: color,
-                                width: isMobile ? '24px' : '32px',
-                                height: isMobile ? '24px' : '32px',
-                                display: 'inline-block',
-                                marginRight: '8px',
-                                borderRadius: '8px',
-                              }}
-                            />
+                            {initialTileAssets[color] ? ( // tileAssets
+                              <img
+                                src={initialTileAssets[color]} //tileAssets
+                                alt="Selected"
+                                style={{
+                                  width: '24px',
+                                  height: '24px',
+                                  display: 'inline-block',
+                                  marginRight: '8px',
+                                  objectFit: 'cover',
+                                  filter: 'brightness(1.5)'
+                                }}
+                              />
+                            ) : (
+                              <span
+                                style={{
+                                  backgroundColor: color,
+                                  width: isMobile ? '24px' : '32px',
+                                  height: isMobile ? '24px' : '32px',
+                                  display: 'inline-block',
+                                  marginRight: '8px',
+                                  borderRadius: '8px',
+                                }}
+                              />
+                            )}
                            <p>{getColorName(color)}</p>
                           </div>
                         </td>

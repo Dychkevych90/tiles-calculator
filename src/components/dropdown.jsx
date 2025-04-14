@@ -3,6 +3,24 @@ import {StyledSelect, Text} from "./styled.js";
 import ArrowIcon from '../../public/arrow.svg';
 import crossIcon from '../../public/crossIcon.svg';
 
+const initialTileAssets = {
+  "#000000": '/tiles/black2.png',
+  '#FFFF00': '/tiles/yellow.png',
+  '#FFC0CB': '/tiles/pink.png',
+  '#800080': '/tiles/purple.png',
+  '#FFFFFF': '/tiles/white.png',
+  '#ADD8E6': '/tiles/lightBlue.png',
+  '#008000': '/tiles/green.png',
+  '#40E0D0': '/tiles/Turquoise.png',
+  '#FFD700': '/tiles/gold.png',
+  '#D3D3D3': '/tiles/lightGrey.png',
+  '#FFA500': '/tiles/red.png',
+  '#0000FF': '/tiles/blue.png',
+  '#FF0000': '/tiles/red2.png',
+  '#808080': '/tiles/grey.png',
+  '#90EE90': '/tiles/lightGreen.png',
+};
+
 const Dropdown = (
   {
     options,
@@ -38,9 +56,9 @@ const Dropdown = (
   return (
     <StyledSelect isOpen={isOpen} ref={dropdownRef} fullWidth={fullWidth}>
       <div className="dropdown-selected" onClick={() => setIsOpen(!isOpen)}>
-        {tileAssets[selectedValue] ? (
+        {initialTileAssets[selectedValue] ? ( // tileAssets
           <img
-            src={tileAssets[selectedValue]}
+            src={initialTileAssets[selectedValue]} //tileAssets
             alt="Selected"
             style={{
               width: '24px',
@@ -48,6 +66,7 @@ const Dropdown = (
               display: 'inline-block',
               marginRight: '8px',
               objectFit: 'cover',
+              filter: 'brightness(1.5)'
             }}
           />
         ) : (
@@ -87,6 +106,7 @@ const Dropdown = (
                     display: 'inline-block',
                     marginRight: '8px',
                     objectFit: 'cover',
+                    filter: 'brightness(1.5)'
                   }}
                 />
               ) : (
