@@ -335,7 +335,7 @@ export default function App() {
                           if (node) {
                             node.cache();
                             node.filters([Konva.Filters.Brighten]);
-                            node.brightness(0.2);
+                            node.brightness(0.15);
                           }
                         }}
                         image={image}
