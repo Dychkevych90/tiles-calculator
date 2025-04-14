@@ -1,27 +1,46 @@
 import {useEffect, useState} from "react";
-import { Stage, Layer, Rect, Line, Image } from "react-konva";
+import {Stage, Layer, Rect, Line, Image, Group} from "react-konva";
 import MainHeader from "./components/header";
 import Sidebar from "./components/sidebar";
 import './App.css'
 import trash from '../public/trash.svg';
 import menuItem from '../public/menuItem.svg';
+import Konva from "konva";
 
 const colorPrices = {
-  "#000000": 7.70, // Black
-  "#FF0000": 7.70, // Red
-  "#808080": 7.70, // Gray
-  "#FFFFFF": 7.70, // White
-  "#0000FF": 7.70, // Blue
+  "#000000": 7.70, // Black //
+  "#FF0000": 7.70, // Red //
+  "#808080": 7.70, // Gray //
+  "#FFFFFF": 7.70, // White //
+  "#0000FF": 7.70, // Blue //
   "#90EE90": 7.70, // Light Green
-  "#FFFF00": 7.70, // Yellow
-  "#FFD700": 7.70, // Gold
-  "#ADD8E6": 7.70, // Light Blue
-  "#008000": 7.70, // Green
-  "#800080": 7.70, // Purple
-  "#FFC0CB": 7.70, // Pink
-  "#FFA500": 7.70, // Orange
-  "#40E0D0": 7.70, // Turquoise
-  "#D3D3D3": 7.70  // Light Gray
+  "#FFFF00": 7.70, // Yellow //
+  "#FFD700": 7.70, // Gold //
+  "#ADD8E6": 7.70, // Light Blue //
+  "#008000": 7.70, // Green //
+  "#800080": 7.70, // Purple //
+  "#FFC0CB": 7.70, // Pink //
+  "#FFA500": 7.70, // Orange //
+  "#40E0D0": 7.70, // Turquoise //
+  "#D3D3D3": 7.70  // Light Gray //
+};
+
+const initialTileAssets = {
+  "#000000": 'tiles/black2.png',
+  '#FFFF00': '/tiles/yellow.png',
+  '#FFC0CB': '/tiles/pink.png',
+  '#800080': '/tiles/purple.png',
+  '#FFFFFF': '/tiles/white.png',
+  '#ADD8E6': '/tiles/lightBlue.png',
+  '#008000': '/tiles/green.png',
+  '#40E0D0': '/tiles/Turquoise.png',
+  '#FFD700': '/tiles/gold.png',
+  '#D3D3D3': '/tiles/lightGrey.png',
+  '#FFA500': '/tiles/red.png',
+  '#0000FF': '/tiles/blue.png',
+  '#FF0000': '/tiles/red2.png',
+  '#808080': '/tiles/grey.png',
+  '#90EE90': '/tiles/lightGreen.png',
 };
 
 export default function App() {
@@ -32,14 +51,15 @@ export default function App() {
   const [width, setWidth] = useState(10);
   const [height, setHeight] = useState(10);
   const [tileSize] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("#FF0000");
+  const [selectedColor, setSelectedColor] = useState("#000000");
   const [tiles, setTiles] = useState(Array(width * height).fill("#fff"));
   const [drawing, setDrawing] = useState(false);
   const [images, setImages] = useState({});
-  const [tileAssets, setTileAssets] = useState({});
+  const [tileAssets, setTileAssets] = useState(initialTileAssets);
   const [isMobile, setIsMobile] = useState(false);
   const [imagesArray, setImagesArray] = useState([]);
   const [doorwayLength, setDoorwayLength] = useState(0);
+  console.log('tileAssets', tileAssets)
 
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
@@ -134,7 +154,7 @@ export default function App() {
   const totalArea = width * height;
   const tileArea = tileSize * tileSize;
   const neededTiles = Math.ceil(totalArea / tileArea);
-  const tilesWithReserve = Math.ceil(customNeededTiles * 1.1);
+  const tilesWithReserve = Math.ceil(customNeededTiles * 1.05);
 
   const coloredTiles = tiles.filter(color => color !== "#fff");
   const totalPrice = coloredTiles.reduce((sum, color) => sum + (colorPrices[color] || 0), 0);
@@ -290,41 +310,67 @@ export default function App() {
                 const color = tiles[index] || "#fff";
                 const image = images[color];
 
+                const scaleX = 1.6;
+                const scaleY = 1.6;
 
-                return image && image.complete ? (
-                  <Image
-                    key={index}
-                    image={image}
-                    x={x}
-                    y={y}
-                    width={tileWidth}
-                    height={tileHeight}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove}
-                    onClick={() => handleTileClick(index)}
-                    onTouchStart={handleMouseDown}
-                    onTouchEnd={handleMouseUp}
-                    onTouchMove={handleMouseMove}
-                  />
-                ) : (
-                  <Rect
+                // Calculate scaled dimensions
+                const scaledWidth = tileWidth * scaleX;
+                const scaledHeight = tileHeight * scaleY;
+
+                // Adjust position to center the scaled tile
+                const adjustedX = x - (scaledWidth - tileWidth) / 2;
+                const adjustedY = y - (scaledHeight - tileHeight) / 2;
+
+                return (
+                  <Group
                     key={index}
                     x={x}
                     y={y}
-                    width={tileWidth}
-                    height={tileHeight}
-                    fill={color}
-                    stroke="#666565"
-                    strokeWidth={0.5}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove}
-                    onClick={() => handleTileClick(index)}
-                    onTouchStart={handleMouseDown}
-                    onTouchEnd={handleMouseUp}
-                    onTouchMove={handleMouseMove}
-                  />
+                    clipFunc={(ctx) => {
+                      ctx.rect(0, 0, tileWidth, tileHeight);
+                    }}
+                  >
+                    {image && image.complete ? (
+                      <Image
+                        ref={(node) => {
+                          if (node) {
+                            node.cache();
+                            node.filters([Konva.Filters.Brighten]);
+                            node.brightness(0.2);
+                          }
+                        }}
+                        image={image}
+                        x={adjustedX - x}
+                        y={adjustedY - y}
+                        width={scaledWidth}
+                        height={scaledHeight}
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                        onClick={() => handleTileClick(index)}
+                        onTouchStart={handleMouseDown}
+                        onTouchEnd={handleMouseUp}
+                        onTouchMove={handleMouseMove}
+                      />
+                    ) : (
+                      <Rect
+                        x={0}
+                        y={0}
+                        width={tileWidth}
+                        height={tileHeight}
+                        fill={color}
+                        stroke="#666565"
+                        strokeWidth={0.5}
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                        onClick={() => handleTileClick(index)}
+                        onTouchStart={handleMouseDown}
+                        onTouchEnd={handleMouseUp}
+                        onTouchMove={handleMouseMove}
+                      />
+                    )}
+                  </Group>
                 );
               })}
 

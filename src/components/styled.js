@@ -397,6 +397,10 @@ export const StyledSelect = styled.div`
             background-color: #F4F4F4;
         }
     }
+    
+    .hidden {
+        display: none;
+    }
 
     .add-btn {
         span {

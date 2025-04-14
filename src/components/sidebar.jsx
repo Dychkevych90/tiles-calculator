@@ -34,10 +34,11 @@ const colorPrices = {
 };
 
 const options = [
-  { value: "#FF0000", color: "#FF0000", label: "Red" },
-  { value: "#40E0D0", color: "#40E0D0", label: "Turquoise" },
   { value: "#000000", color: "#000000", label: "Black" },
   { value: "#808080", color: "#808080", label: "Gray" },
+  { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray" },
+  { value: "#FF0000", color: "#FF0000", label: "Red" },
+  { value: "#40E0D0", color: "#40E0D0", label: "Turquoise" },
   { value: "#FFFFFF", color: "#FFFFFF", label: "White" },
   { value: "#0000FF", color: "#0000FF", label: "Blue" },
   { value: "#90EE90", color: "#90EE90", label: "Light Green" },
@@ -48,7 +49,6 @@ const options = [
   { value: "#800080", color: "#800080", label: "Purple" },
   { value: "#FFC0CB", color: "#FFC0CB", label: "Pink" },
   { value: "#FFA500", color: "#FFA500", label: "Orange" },
-  { value: "#D3D3D3", color: "#D3D3D3", label: "Light Gray" }
 ];
 
 const SideBar = (
@@ -150,16 +150,22 @@ const SideBar = (
   const generatePDF = () => {
     const doc = new jsPDF();
 
+    const logoImg = 'newLogo.jpg';
+
+    const imgWidth = 25;
+    const imgHeight = 5;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    doc.addImage(logoImg, 'PNG', pageWidth - imgWidth - 10, 10, imgWidth, imgHeight);
+
     doc.text("Tile Calculation Summary", 14, 15);
 
-    // Tiles Table
     const tileTableColumn = ["Color", "Price", "Quantity", "Total"];
     const tileTableRows = [];
     let tilesTotalPrice = 0;
 
     allColors.forEach((color) => {
       const count = tiles.filter((t) => t === color).length;
-      const price = colorPrices[color]?.price || 1;
+      const price = colorPrices[color]?.price || 30;
       if (count > 0) {
         const total = count * price;
         tilesTotalPrice += total;
@@ -175,7 +181,7 @@ const SideBar = (
     autoTable(doc, {
       head: [tileTableColumn],
       body: tileTableRows,
-      startY: 20,
+      startY: 30,
     });
 
     const edgeCornerTableColumn = ["Type", "Color", "Price", "Quantity", "Total"];
@@ -245,6 +251,15 @@ const SideBar = (
       body: summaryTableRows,
       startY: doc.lastAutoTable.finalY + 10,
     });
+
+    // Add Company Information at the end
+    const finalY = doc.lastAutoTable.finalY + 20;
+    doc.setFontSize(11);
+    doc.text("Modulux Inc.", 14, finalY);
+    doc.text("406-58 Rue Rogel-Lamoureux, Napierville, QC J0J 1L0", 14, finalY + 5);
+    doc.text("Email: info@shopmodulux.com", 14, finalY + 10);
+    doc.text("Tel: 450-915-2192", 14, finalY + 15);
+    doc.text("Customer Service: Monday to Friday between 9.00 am to 5.00 pm.", 14, finalY + 20);
 
     doc.save("tile_calculation_summary.pdf");
   };
@@ -444,7 +459,7 @@ const SideBar = (
 
         <div className="info-row">
           <div className='info'>
-            <Text>Tiles with a reserve (+10%):</Text>
+            <Text>Tiles with a reserve (+5%):</Text>
 
             <div className='info-item'>
               <div className='value'>{tilesWithReserve}</div>

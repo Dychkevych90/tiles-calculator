@@ -16,7 +16,7 @@ const Dropdown = (
   }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+console.log('combinedArray', options)
   const handleSelect = (value) => {
     onChange(value);
     setIsOpen(false);
@@ -74,7 +74,7 @@ const Dropdown = (
           {options.map(option => (
             <div
               key={option.value}
-              className="dropdown-option"
+              className={`dropdown-option ${option.label.startsWith('#') ? 'hidden' : ''}`}
               onClick={() => handleSelect(option.value)}
             >
               {option.src ? (
