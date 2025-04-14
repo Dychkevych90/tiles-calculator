@@ -229,7 +229,7 @@ const SideBar = (
     const summaryTableColumn = [
       "Total Price",
       "Needed Tiles",
-      "With Reserve 10%",
+      "With Reserve 5%",
       "Edges",
       "Corners",
       "Total Area",
