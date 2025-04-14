@@ -16,7 +16,7 @@ const Dropdown = (
   }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-console.log('combinedArray', options)
+
   const handleSelect = (value) => {
     onChange(value);
     setIsOpen(false);

@@ -59,7 +59,6 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [imagesArray, setImagesArray] = useState([]);
   const [doorwayLength, setDoorwayLength] = useState(0);
-  console.log('tileAssets', tileAssets)
 
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
