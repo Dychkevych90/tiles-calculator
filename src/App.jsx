@@ -170,7 +170,7 @@ export default function App() {
 
   const calculateEdgesAndCorners = () => {
     const tileSizes = {
-      GridMaxPro: {edgeM: 0.4, edgeFt: 1.7213 },
+      GridMaxPro: {edgeM: 0.4, edgeFt: 1.3119 },
       PlayFlex: { edgeM: 0.305, edgeFt: 1.0013 }
     };
 
