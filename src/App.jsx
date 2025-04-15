@@ -59,6 +59,7 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [imagesArray, setImagesArray] = useState([]);
   const [doorwayLength, setDoorwayLength] = useState(0);
+  const [totalSquareFeet, setTotalSquareFeet] = useState(0);
 
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
@@ -153,7 +154,7 @@ export default function App() {
   const totalArea = width * height;
   const tileArea = tileSize * tileSize;
   const neededTiles = Math.ceil(totalArea / tileArea);
-  const tilesWithReserve = Math.ceil(customNeededTiles * 1.05);
+  const tilesWithReserve = Math.ceil(totalSquareFeet * 1.05);
 
   const coloredTiles = tiles.filter(color => color !== "#fff");
   const totalPrice = coloredTiles.reduce((sum, color) => sum + (colorPrices[color] || 0), 0);
@@ -239,6 +240,11 @@ export default function App() {
   const tilesXFull = Math.ceil(tilesXExact);
   const tilesYFull = Math.ceil(tilesYExact);
 
+  useEffect(() => {
+    setTotalSquareFeet(tilesXFull * tilesYFull)
+  }, [tilesXFull, tilesYFull]);
+
+
   return (
     <>
       <MainHeader setIsMobile={setIsMobile} isMobile={isMobile}/>
@@ -290,7 +296,7 @@ export default function App() {
           doorwayLength={doorwayLength}
           calculateEdgesAndCorners={calculateEdgesAndCorners}
           customTotalArea={customTotalArea}
-          customNeededTiles={customNeededTiles}
+          customNeededTiles={totalSquareFeet}
         />
 
         <div className="stage-container">
