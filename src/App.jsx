@@ -157,7 +157,7 @@ export default function App() {
   };
 
   const handleTouchMove = (e) => {
-    if (drawing) handleInteraction(e);
+    //if (drawing) handleInteraction(e);
   };
 
   const handleTouchEnd = () => {

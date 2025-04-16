@@ -255,7 +255,7 @@ const SideBar = (
 
     const summaryTableRows = [
       [
-        `${finalTotalPrice.toFixed(2)}$`,
+        `${finalTotalPrice.toFixed(2)}$ (excl taxes)`,
         customNeededTiles,
         tilesWithReserve,
         edges,
