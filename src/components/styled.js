@@ -9,7 +9,6 @@ export const InfoContainer = styled.div`
     align-items: flex-start;
     margin-right: 50px;
     gap: 32px;
-    overflow-y: auto;
 
     @media (max-width: 900px) {
         display: flex;
@@ -25,6 +24,8 @@ export const InfoContainer = styled.div`
         background-color: #F8F8F8;
         max-width: 400px;
         gap: 12px;
+        overflow-y: auto;
+        min-height: 100vh;
     }
 `
 
