@@ -25,7 +25,7 @@ export const InfoContainer = styled.div`
         max-width: 400px;
         gap: 12px;
         overflow-y: auto;
-        min-height: 100vh;
+        height: calc(100vh - 84px);
     }
 `
 
