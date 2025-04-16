@@ -60,11 +60,15 @@ export default function App() {
   const [imagesArray, setImagesArray] = useState([]);
   const [doorwayLength, setDoorwayLength] = useState(0);
   const [totalSquareFeet, setTotalSquareFeet] = useState(0);
+  //const [scale, setScale] = useState(1);
 
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
     PlayFlex: { m2: 0.093025, ft2: 1.0013 }
   };
+
+  // const handleZoomIn = () => setScale((prev) => Math.min(prev + 0.1, 3));
+  // const handleZoomOut = () => setScale((prev) => Math.max(prev - 0.1, 0.5));
 
   const calculateNeededTiles = (width, height, tileType, unit) => {
     if (!tileType || !tileSizes[tileType]) {
@@ -118,6 +122,48 @@ export default function App() {
   const stageWidth = Math.max(width * minTileSize, 400);
   const stageHeight = Math.max(height * minTileSize, 400);
 
+  const getPointerPosition = (stage) => {
+    const pointerPosition = stage.getPointerPosition();
+    return pointerPosition || { x: 0, y: 0 };
+  };
+
+  const handleInteraction = (e) => {
+    const stage = e.target.getStage();
+    const pointerPosition = getPointerPosition(stage);
+
+    const { x, y } = pointerPosition;
+
+    const tileWidth = stageWidth / tilesXFull;
+    const tileHeight = stageHeight / tilesYFull;
+
+    const tileX = Math.floor(x / tileWidth);
+    const tileY = Math.floor(y / tileHeight);
+
+    const index = tileY * tilesXFull + tileX;
+
+    if (tileX < 0 || tileY < 0 || tileX >= tilesXFull || tileY >= tilesYFull) return;
+
+    setTiles((prev) => {
+      const newTiles = [...prev];
+      newTiles[index] = selectedColor;
+      return newTiles;
+    });
+  };
+
+  // Touch events
+  const handleTouchStart = (e) => {
+    setDrawing(true);
+    handleInteraction(e);
+  };
+
+  const handleTouchMove = (e) => {
+    if (drawing) handleInteraction(e);
+  };
+
+  const handleTouchEnd = () => {
+    setDrawing(false);
+  };
+
   const handleMouseMove = (e) => {
     if (!drawing) return;
     const stage = e.target.getStage();
@@ -126,9 +172,14 @@ export default function App() {
     if (!pointerPosition) return;
 
     const { x, y } = pointerPosition;
+    // const scaledX = x / scale;
+    // const scaledY = y / scale;
 
     const tileWidth = stageWidth / tilesXFull;
     const tileHeight = stageHeight / tilesYFull;
+
+    // const tileX = Math.floor(scaledX / tileWidth);
+    // const tileY = Math.floor(scaledY / tileHeight);
 
     const tileX = Math.floor(x / tileWidth);
     const tileY = Math.floor(y / tileHeight);
@@ -299,8 +350,14 @@ export default function App() {
           customNeededTiles={totalSquareFeet}
         />
 
+        {/*<div style={{ marginBottom: '10px' }}>*/}
+        {/*  <button onClick={handleZoomOut}>- Zoom Out</button>*/}
+        {/*  <button onClick={handleZoomIn}>+ Zoom In</button>*/}
+        {/*</div>*/}
+
         <div className="stage-container">
-          <Stage width={stageWidth} height={stageHeight} style={{marginBottom: 15}}>
+          {/*<Stage width={stageWidth * scale} height={stageHeight * scale} style={{marginBottom: 15}} scale={{ x: scale, y: scale }}>*/}
+          <Stage width={stageWidth} height={stageHeight} style={{marginBottom: 15}} >
             <Layer>
               {Array.from({ length: tilesXFull * tilesYFull }).map((_, index) => {
                 const tileWidth = stageWidth / tilesXFull;
@@ -353,9 +410,9 @@ export default function App() {
                         onMouseUp={handleMouseUp}
                         onMouseMove={handleMouseMove}
                         onClick={() => handleTileClick(index)}
-                        onTouchStart={handleMouseDown}
-                        onTouchEnd={handleMouseUp}
-                        onTouchMove={handleMouseMove}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
                       />
                     ) : (
                       <Rect
@@ -370,9 +427,9 @@ export default function App() {
                         onMouseUp={handleMouseUp}
                         onMouseMove={handleMouseMove}
                         onClick={() => handleTileClick(index)}
-                        onTouchStart={handleMouseDown}
-                        onTouchEnd={handleMouseUp}
-                        onTouchMove={handleMouseMove}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
                       />
                     )}
                   </Group>
