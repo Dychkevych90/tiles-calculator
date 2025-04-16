@@ -150,18 +150,35 @@ export default function App() {
     });
   };
 
-  // Touch events
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [startTouch, setStartTouch] = useState({ x: 0, y: 0 });
+
   const handleTouchStart = (e) => {
     setDrawing(true);
-    handleInteraction(e);
+    const touch = e.touches[0];
+    setStartTouch({ x: touch.clientX, y: touch.clientY });
   };
 
   const handleTouchMove = (e) => {
-    //if (drawing) handleInteraction(e);
+    if (!drawing) return;
+
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - startTouch.x);
+    const deltaY = Math.abs(touch.clientY - startTouch.y);
+
+    // If the movement is primarily vertical or horizontal, treat it as scrolling
+    if (deltaX > 10 || deltaY > 10) {
+      setIsScrolling(true);
+      return;
+    }
+
+    setIsScrolling(false);
+    handleInteraction(e); // Call your tile coloring logic
   };
 
   const handleTouchEnd = () => {
     setDrawing(false);
+    setIsScrolling(false);
   };
 
   const handleMouseMove = (e) => {
