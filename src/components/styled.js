@@ -9,6 +9,7 @@ export const InfoContainer = styled.div`
     align-items: flex-start;
     margin-right: 50px;
     gap: 32px;
+    overflow-y: auto;
 
     @media (max-width: 900px) {
         display: flex;

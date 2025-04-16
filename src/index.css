@@ -20,7 +20,7 @@
 body {
   display: flex;
   min-width: 320px;
-  min-height: 100px;
+  min-height: 100vh;
   overflow-x: hidden;
   margin: 0 0 50px;
 }
