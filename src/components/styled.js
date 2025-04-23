@@ -456,7 +456,7 @@ export const Input = styled.input`
     font-weight: 500;
     color: #170504;
     border: none;
-    width: 49px;
+    width: 50px;
 
     &:focus,
     &:active {
