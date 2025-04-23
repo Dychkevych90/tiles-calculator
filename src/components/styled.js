@@ -469,6 +469,7 @@ export const InputContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
+    min-width: 49px;
 
     @media (max-width: 900px) {
         flex-direction: column;
