@@ -448,7 +448,6 @@ export const Button = styled.button`
 `;
 
 export const Input = styled.input`
-    width: 45px;
     text-align: center;
     font-size: 16px;
     padding: 5px;
@@ -457,7 +456,7 @@ export const Input = styled.input`
     font-weight: 500;
     color: #170504;
     border: none;
-    min-width: 49px;
+    width: 49px;
 
     &:focus,
     &:active {
