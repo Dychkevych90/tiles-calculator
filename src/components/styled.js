@@ -457,6 +457,7 @@ export const Input = styled.input`
     font-weight: 500;
     color: #170504;
     border: none;
+    min-width: 49px;
 
     &:focus,
     &:active {
@@ -469,7 +470,6 @@ export const InputContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    min-width: 49px;
 
     @media (max-width: 900px) {
         flex-direction: column;
