@@ -52,7 +52,7 @@ export default function App() {
   const [height, setHeight] = useState(10);
   const [tileSize] = useState(1);
   const [selectedColor, setSelectedColor] = useState("#000000");
-  const [tiles, setTiles] = useState(Array(width * height).fill("#fff"));
+  const [tiles, setTiles] = useState(Array(Math.max(1, Math.ceil(width * height))).fill("#fff"));
   const [drawing, setDrawing] = useState(false);
   const [images, setImages] = useState({});
   const [tileAssets, setTileAssets] = useState(initialTileAssets);
@@ -61,7 +61,7 @@ export default function App() {
   const [doorwayLength, setDoorwayLength] = useState(0);
   const [totalSquareFeet, setTotalSquareFeet] = useState(0);
   //const [scale, setScale] = useState(1);
-
+console.log('w', width, 'h', height)
   const tileSizes = {
     GridMaxPro: { m2: 0.16, ft2: 1.722 },
     PlayFlex: { m2: 0.093025, ft2: 1.0013 }
@@ -103,18 +103,16 @@ export default function App() {
   }, [tileAssets]);
 
   useEffect(() => {
-    setTiles(Array(width * height).fill("#fff"));
+    setTiles(Array(Math.max(1, Math.ceil(width * height))).fill("#fff"));
   }, [width * height]);
 
   const handleTileClick = (index) => {
     setTiles((prev) => {
-      // if (installationType === "wallToWall") {
-      //   return prev.map(() => selectedColor);
-      // } else {
-        const newTiles = [...prev];
-        newTiles[index] = selectedColor;
-        return newTiles;
-      //}
+      const newTiles = [...prev];
+
+      newTiles[index] = prev[index] === selectedColor ? "#fff" : selectedColor;
+
+      return newTiles;
     });
   };
 
@@ -305,9 +303,9 @@ export default function App() {
   const tilesXExact = width / tileSideFt;
   const tilesYExact = height / tileSideFt;
 
-  const tilesXFull = Math.ceil(tilesXExact);
-  const tilesYFull = Math.ceil(tilesYExact);
-
+  const tilesXFull = Math.max(1, Math.ceil(tilesXExact));
+  const tilesYFull = Math.max(1, Math.ceil(tilesYExact));
+console.log('tilesXFull', tilesXFull, 'tilesYFull', tilesYFull)
   useEffect(() => {
     setTotalSquareFeet(tilesXFull * tilesYFull)
   }, [tilesXFull, tilesYFull]);

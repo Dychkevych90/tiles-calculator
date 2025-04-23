@@ -460,7 +460,7 @@ const SideBar = (
             <Text>Area:</Text>
 
             <div className="info-item">
-              <div className='value'>{totalArea}</div>
+              <div className='value'>{totalArea.toFixed(1)}</div>
               <Text>{unit}</Text>
             </div>
           </div>
